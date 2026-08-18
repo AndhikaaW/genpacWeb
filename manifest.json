@@ -1,11 +1,11 @@
 {
-    "name": "genpac_app",
-    "short_name": "genpac_app",
+    "name": "GenPAC - Genza Education",
+    "short_name": "GenPAC",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "background_color": "#0B5394",
+    "theme_color": "#0B5394",
+    "description": "Formulir Pendaftaran Siswa GenPAC - Genza Education",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

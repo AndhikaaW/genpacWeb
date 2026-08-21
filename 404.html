@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>GenPAC</title>
+    <script>
+      // SPA for GitHub Pages - 404 redirect
+      // Redirects /path to /#/path via index.html
+      (function() {
+        var repo = '/';
+        var repoSegments = repo.split('/').filter(function(s) { return s.length > 0; });
+        var numRepoSegments = repoSegments.length;
+        var l = window.location;
+        l.replace(
+          l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
+          l.pathname.split('/').slice(0, 1 + numRepoSegments).join('/') + '/?/' +
+          l.pathname.slice(1).split('/').slice(numRepoSegments).join('/').replace(/&/g, '~and~') +
+          (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
+          l.hash
+        );
+      })();
+    </script>
+  </head>
+  <body></body>
+</html>

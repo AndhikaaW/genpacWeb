@@ -1,0 +1,292 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Identitas (30%) - v2 colors */
+    --blue-500: #22539F;
+    --blue-400: #3173B8;
+    --blue-900: #22539F;
+    --navy-700: #22539F;
+
+    /* Aksen (10%) */
+    --yellow-400: #F6CC46;
+    --yellow-glow: rgba(246, 204, 70, 0.35);
+
+    /* Netral (60%) */
+    --white: #FFFFFF;
+    --mist-50: #F4F6FE;
+    --slate-800: #2B2F3A;
+    --slate-500: #5B6475;
+    --line: #E3E8F4;
+
+    /* Radius & shadow - v2 */
+    --radius-card: 20px;
+    --radius-panel: 32px;
+    --radius-pill: 999px;
+    --shadow-card: 0 10px 40px rgba(34, 83, 159, 0.12);
+    --shadow-card-hover: 0 16px 48px rgba(34, 83, 159, 0.20);
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+    --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.1);
+
+    /* Motion tokens */
+    --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+    --ease-inout: cubic-bezier(0.65, 0, 0.35, 1);
+    --dur-micro: 200ms;
+    --dur-reveal: 700ms;
+    --dur-panel: 450ms;
+    --stagger: 70ms;
+
+    --container: 1120px;
+
+    --background: oklch(1 0 0);
+
+    --foreground: oklch(0.145 0 0);
+
+    --card: oklch(1 0 0);
+
+    --card-foreground: oklch(0.145 0 0);
+
+    --popover: oklch(1 0 0);
+
+    --popover-foreground: oklch(0.145 0 0);
+
+    --primary: oklch(0.205 0 0);
+
+    --primary-foreground: oklch(0.985 0 0);
+
+    --secondary: oklch(0.97 0 0);
+
+    --secondary-foreground: oklch(0.205 0 0);
+
+    --muted: oklch(0.97 0 0);
+
+    --muted-foreground: oklch(0.556 0 0);
+
+    --accent: oklch(0.97 0 0);
+
+    --accent-foreground: oklch(0.205 0 0);
+
+    --destructive: oklch(0.577 0.245 27.325);
+
+    --border: oklch(0.922 0 0);
+
+    --input: oklch(0.922 0 0);
+
+    --ring: oklch(0.708 0 0);
+
+    --chart-1: oklch(0.87 0 0);
+
+    --chart-2: oklch(0.556 0 0);
+
+    --chart-3: oklch(0.439 0 0);
+
+    --chart-4: oklch(0.371 0 0);
+
+    --chart-5: oklch(0.269 0 0);
+
+    --radius: 0.625rem;
+
+    --sidebar: oklch(0.985 0 0);
+
+    --sidebar-foreground: oklch(0.145 0 0);
+
+    --sidebar-primary: oklch(0.205 0 0);
+
+    --sidebar-primary-foreground: oklch(0.985 0 0);
+
+    --sidebar-accent: oklch(0.97 0 0);
+
+    --sidebar-accent-foreground: oklch(0.205 0 0);
+
+    --sidebar-border: oklch(0.922 0 0);
+
+    --sidebar-ring: oklch(0.708 0 0);
+  }
+
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+    cursor: default;
+  }
+
+  /* cursor:pointer for all interactive elements (R-39) */
+  a[href], button, [role="button"], [role="tab"], summary, label[for] {
+    cursor: pointer;
+  }
+  button:disabled, [aria-disabled="true"] {
+    cursor: not-allowed;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-sans font-bold;
+  }
+
+  /* Focus styles for accessibility - v2 yellow accent */
+  :focus-visible {
+    @apply outline-2 outline-yellow-400 outline-offset-2 rounded-lg;
+  }
+
+  /* Focus ring color for different interactive elements */
+  button:focus-visible,
+  a:focus-visible {
+    @apply outline-2 outline-yellow-400 outline-offset-2;
+  }
+
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible {
+    @apply outline-2 outline-yellow-400 outline-offset-2 rounded-lg ring-2 ring-yellow-100;
+  }
+  .theme {
+    --font-heading: var(--font-sans);
+    --font-sans: var(--font-sans);
+  }
+  .dark {
+    --background: oklch(0.145 0 0);
+    --foreground: oklch(0.985 0 0);
+    --card: oklch(0.205 0 0);
+    --card-foreground: oklch(0.985 0 0);
+    --popover: oklch(0.205 0 0);
+    --popover-foreground: oklch(0.985 0 0);
+    --primary: oklch(0.922 0 0);
+    --primary-foreground: oklch(0.205 0 0);
+    --secondary: oklch(0.269 0 0);
+    --secondary-foreground: oklch(0.985 0 0);
+    --muted: oklch(0.269 0 0);
+    --muted-foreground: oklch(0.708 0 0);
+    --accent: oklch(0.269 0 0);
+    --accent-foreground: oklch(0.985 0 0);
+    --destructive: oklch(0.704 0.191 22.216);
+    --border: oklch(1 0 0 / 10%);
+    --input: oklch(1 0 0 / 15%);
+    --ring: oklch(0.556 0 0);
+    --chart-1: oklch(0.87 0 0);
+    --chart-2: oklch(0.556 0 0);
+    --chart-3: oklch(0.439 0 0);
+    --chart-4: oklch(0.371 0 0);
+    --chart-5: oklch(0.269 0 0);
+    --sidebar: oklch(0.205 0 0);
+    --sidebar-foreground: oklch(0.985 0 0);
+    --sidebar-primary: oklch(0.488 0.243 264.376);
+    --sidebar-primary-foreground: oklch(0.985 0 0);
+    --sidebar-accent: oklch(0.269 0 0);
+    --sidebar-accent-foreground: oklch(0.985 0 0);
+    --sidebar-border: oklch(1 0 0 / 10%);
+    --sidebar-ring: oklch(0.556 0 0);
+  }
+  * {
+    @apply border-border;
+  }
+  html {
+    @apply font-sans;
+  }
+}
+
+@layer components {
+  .container {
+    @apply max-w-[var(--container)] mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Primary button - rounded-lg, not pill */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition-all duration-200 hover:shadow-md active:scale-95 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2;
+  }
+
+  /* Outline button - rounded-lg, not pill */
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 border-2 border-slate-200 text-slate-700 font-semibold rounded-lg hover:bg-slate-50 transition-all duration-200 active:scale-95 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2;
+  }
+
+  /* Card - subtle shadow, rounded-xl */
+  .card {
+    @apply bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-200 p-6;
+  }
+
+  /* Section backgrounds - more variety */
+  .section-mist {
+    @apply bg-slate-50 py-20;
+  }
+
+  .section-white {
+    @apply bg-white py-20;
+  }
+
+  .section-blue {
+    @apply bg-blue-50 py-20;
+  }
+
+  @keyframes wave-breathe {
+    from { transform: scaleX(1.01); }
+    to { transform: scaleX(1.05); }
+  }
+
+  /* Subtle horizontal breathing keeps the three hero waves animated without
+     sliding their edges out of the viewport. */
+  .wave-layer {
+    width: 100%;
+    transform-origin: center;
+    animation: wave-breathe 8s ease-in-out infinite alternate;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .wave-layer {
+      animation: none;
+    }
+  }
+
+  /* Animations */
+  @keyframes fadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fade-up {
+    animation: fadeUp 0.6s ease-out forwards;
+  }
+
+  .animate-delay-100 {
+    animation-delay: 0.1s;
+  }
+
+  .animate-delay-200 {
+    animation-delay: 0.2s;
+  }
+
+  .animate-delay-300 {
+    animation-delay: 0.3s;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Smooth scroll for anchor links */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Hide scrollbar for cleaner look but keep functionality */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

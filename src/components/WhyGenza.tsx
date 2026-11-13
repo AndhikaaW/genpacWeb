@@ -36,10 +36,10 @@ export default function WhyGenza() {
           <div className="relative z-10">
             <Globe className="w-10 h-10 text-blue-300 mb-4" aria-hidden="true" />
             <h3 className="text-2xl font-bold text-white mb-2">Jaringan Nasional</h3>
-            <p className="text-blue-200 text-sm leading-relaxed">150+ center di seluruh Indonesia. Titik kuning = Genza Pacitan.</p>
+            <p className="text-blue-200 text-sm leading-relaxed">170+ center di seluruh Indonesia. Titik kuning = Genza Pacitan.</p>
           </div>
           <div className="relative z-10 mt-4">
-            <span className="text-5xl font-bold text-yellow-400">150+</span>
+            <span className="text-5xl font-bold text-yellow-400">170+</span>
             <span className="text-blue-300 text-lg ml-2">center</span>
           </div>
         </div>

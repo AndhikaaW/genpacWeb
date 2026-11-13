@@ -5,8 +5,8 @@ export default function TrustBar() {
   const stats = [
     {
       icon: <Users className="w-8 h-8 text-blue-500" />,
-      label: '150+ Center di Indonesia',
-      value: '150+',
+      label: '170+ Center di Indonesia',
+      value: '170+',
     },
     {
       icon: <Award className="w-8 h-8 text-yellow-400" />,

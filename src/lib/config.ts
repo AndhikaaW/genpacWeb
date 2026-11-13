@@ -1,7 +1,7 @@
 export const SITE_CONFIG = {
   brandName: "Genza Education",
   branch: "Pacitan",
-  tagline: "Bimbel yang Kamu Banget",
+  tagline: "Bimbel yang Aku Banget",
   whatsappNumber: "6281234567890", // TODO: format internasional tanpa +, mis. 6281234567890
   whatsappDefaultMessage: "Halo Genza Pacitan, saya ingin tanya program bimbingan belajar.",
   address: "Jl. D.I Panjaitan No.23, Baleharjo, Pacitan, Jawa Timur",

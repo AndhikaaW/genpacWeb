@@ -90,7 +90,7 @@ export default function Navbar({
               </a>
             ))}
             <a
-              href={waLink(`Halo Genza ${settings.branch}, saya ingin tanya program bimbingan belajar.`, settings.whatsappNumber)}
+              href="https://genzaeducationpacitan.online/#/daftar"
               target="_blank"
               rel="noopener"
               className="ml-2 px-5 py-2.5 bg-gradient-to-r from-blue-500 to-blue-600 text-white text-sm font-semibold rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all hover:shadow-md active:scale-95 flex items-center gap-2"
@@ -135,7 +135,7 @@ export default function Navbar({
               </a>
             ))}
             <a
-              href={waLink(`Halo Genza ${settings.branch}, saya ingin tanya program bimbingan belajar.`, settings.whatsappNumber)}
+              href="https://genzaeducationpacitan.online/#/daftar"
               target="_blank"
               rel="noopener"
               className="block w-full mt-4 px-5 py-3.5 bg-gradient-to-r from-blue-500 to-blue-600 text-white text-base font-semibold rounded-lg text-center hover:from-blue-600 hover:to-blue-700 transition-all hover:shadow-md"

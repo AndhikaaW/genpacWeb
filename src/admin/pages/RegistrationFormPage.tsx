@@ -3,6 +3,8 @@ import { collection, query, where, orderBy, getDocs, runTransaction, doc, server
 import { db } from '../../firebase'
 import { AGAMA_OPTIONS, KELAS_DI_GENZA } from '../types'
 import logoUrl from '../../assets/G-logo.png'
+import { useAppSettings } from '../../hooks/AppSettingsContext'
+import { waLink } from '../../lib/config'
 
 // ── Kode generator: GNZ-{yyyyMMdd}-{0001} ──
 function generateKode(date: Date, n: number) {
@@ -33,6 +35,7 @@ const inp = 'w-full border border-slate-200 rounded-xl px-4 py-2.5 text-sm outli
 const lbl = 'block text-sm font-medium text-slate-600 mb-1'
 
 export default function RegistrationFormPage() {
+  const settings = useAppSettings()
   const [step, setStep] = useState(0)
   const [programs, setPrograms] = useState<string[]>([])
   const [selectedPrograms, setSelectedPrograms] = useState<string[]>([])
@@ -175,7 +178,8 @@ export default function RegistrationFormPage() {
           <div className="bg-blue-50 border border-blue-100 rounded-2xl px-6 py-4 mb-6">
             <p className="font-mono text-2xl font-bold text-blue-700 tracking-wider">{submitted}</p>
           </div>
-          <p className="text-sm text-slate-500 mb-6">Tim Genza akan menghubungi Anda untuk konfirmasi. Gunakan kode ini untuk cek status pendaftaran.</p>
+           <p className="text-sm text-slate-500 mb-4">Pendaftaran tersimpan. Hubungi admin melalui WhatsApp untuk konfirmasi dengan menyertakan kode pendaftaran.</p>
+           <a href={waLink(`Halo Genza, saya sudah mendaftar dengan kode ${submitted}. Mohon konfirmasi pendaftaran saya.`, settings.whatsappNumber)} target="_blank" rel="noopener" className="mb-3 inline-block w-full rounded-xl bg-emerald-600 py-3 font-bold text-white transition-colors hover:bg-emerald-700">Konfirmasi via WhatsApp</a>
           <a href="/" className="inline-block w-full py-3 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 transition-colors">Kembali ke Beranda</a>
         </div>
       </div>

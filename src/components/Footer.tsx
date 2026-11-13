@@ -57,7 +57,7 @@ export default function Footer() {
                 <span className="text-white font-bold text-lg">genza {settings.branch.toUpperCase()}</span>
               </div>
               <p className="text-blue-200 text-sm leading-relaxed mb-4">
-                Bimbel yang Kamu Banget di Pacitan. Membangun generasi cerdas dan berprestasi.
+                Bimbel yang Aku Banget di Pacitan. Membangun generasi cerdas dan berprestasi.
               </p>
               <a
                 href={settings.hqWebsite}

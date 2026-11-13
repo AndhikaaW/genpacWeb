@@ -73,7 +73,7 @@ export default function Hero() {
 
             {/* H1 - with yellow highlight */}
             <h1 className="max-w-5xl text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight">
-              Bimbel yang Kamu Banget,
+              Bimbel yang Aku Banget,
               <span className="text-yellow-400"> kini di Pacitan</span>
             </h1>
 

@@ -40,7 +40,7 @@ export default function RegistrationFlow() {
 
       <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-10">
         <a
-          href="#/daftar"
+          href="https://genzaeducationpacitan.online/#/daftar"
           className="inline-flex items-center gap-2 px-8 py-4 bg-yellow-400 text-[#22539F] font-bold rounded-full hover:bg-yellow-300 transition-all hover:shadow-card active:scale-95"
         >
           Daftar Online Sekarang

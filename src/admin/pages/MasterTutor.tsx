@@ -2,13 +2,14 @@ import { useState, useEffect } from 'react'
 import { collection, query, orderBy, onSnapshot, addDoc, updateDoc, deleteDoc, doc, serverTimestamp } from 'firebase/firestore'
 import { db } from '../../firebase'
 import AdminFormDialog from '../components/AdminFormDialog'
+import AdminImageUpload from '../components/AdminImageUpload'
 
 interface TutorItem { id: string; nama: string; mapel: string; fotoBa64: string; aktif: boolean; urutan: number }
 
 export default function MasterTutor() {
   const [items, setItems] = useState<TutorItem[]>([])
   const [loading, setLoading] = useState(true)
-  const [form, setForm] = useState({ nama: '', mapel: '' })
+  const [form, setForm] = useState({ nama: '', mapel: '', fotoBa64: '' })
   const [editing, setEditing] = useState<TutorItem | null>(null)
   const [showForm, setShowForm] = useState(false)
 
@@ -19,16 +20,16 @@ export default function MasterTutor() {
     })
   }, [])
 
-  const openAdd = () => { setEditing(null); setForm({ nama: '', mapel: '' }); setShowForm(true) }
-  const openEdit = (t: TutorItem) => { setEditing(t); setForm({ nama: t.nama, mapel: t.mapel }); setShowForm(true) }
+  const openAdd = () => { setEditing(null); setForm({ nama: '', mapel: '', fotoBa64: '' }); setShowForm(true) }
+  const openEdit = (t: TutorItem) => { setEditing(t); setForm({ nama: t.nama, mapel: t.mapel, fotoBa64: t.fotoBa64 }); setShowForm(true) }
 
   const save = async () => {
     if (!form.nama.trim() || !form.mapel.trim()) throw new Error('Nama dan mata pelajaran wajib diisi.')
     if (editing) {
-      await updateDoc(doc(db, 'tutors', editing.id), { nama: form.nama, mapel: form.mapel, updated_at: serverTimestamp() })
+      await updateDoc(doc(db, 'tutors', editing.id), { nama: form.nama, mapel: form.mapel, foto_base64: form.fotoBa64, updated_at: serverTimestamp() })
     } else {
       const maxUrutan = items.length > 0 ? Math.max(...items.map((i) => i.urutan)) + 1 : 0
-      await addDoc(collection(db, 'tutors'), { nama: form.nama, mapel: form.mapel, foto_base64: '', aktif: true, urutan: maxUrutan, created_at: serverTimestamp() })
+      await addDoc(collection(db, 'tutors'), { nama: form.nama, mapel: form.mapel, foto_base64: form.fotoBa64, aktif: true, urutan: maxUrutan, created_at: serverTimestamp() })
     }
     setShowForm(false)
   }
@@ -43,13 +44,14 @@ export default function MasterTutor() {
         <button onClick={openAdd} className="px-4 py-2 bg-blue-600 text-white text-sm font-bold rounded-xl hover:bg-blue-700">+ Tambah Tutor</button>
       </div>
 
-      <AdminFormDialog open={showForm} onOpenChange={setShowForm} title={editing ? 'Edit Tutor' : 'Tambah Tutor'} description="Isi nama dan bidang pengajaran tutor." onSubmit={save}>
+      <AdminFormDialog open={showForm} onOpenChange={setShowForm} title={editing ? 'Edit Tutor' : 'Tambah Tutor'} description="Isi nama, bidang pengajaran, dan foto tutor." onSubmit={save}>
         <label className="block space-y-1.5 text-sm font-medium text-slate-700">Nama tutor <span className="text-red-600">*</span>
           <input required value={form.nama} onChange={(e) => setForm({ ...form, nama: e.target.value })} placeholder="Nama lengkap" className="w-full rounded-md border border-slate-300 px-3 py-2.5 font-normal outline-none focus-visible:ring-2 focus-visible:ring-blue-500" />
         </label>
         <label className="block space-y-1.5 text-sm font-medium text-slate-700">Mata pelajaran / spesialisasi <span className="text-red-600">*</span>
           <input required value={form.mapel} onChange={(e) => setForm({ ...form, mapel: e.target.value })} placeholder="Contoh: Matematika" className="w-full rounded-md border border-slate-300 px-3 py-2.5 font-normal outline-none focus-visible:ring-2 focus-visible:ring-blue-500" />
         </label>
+        <AdminImageUpload label="Foto tutor" value={form.fotoBa64} onChange={(fotoBa64) => setForm((current) => ({ ...current, fotoBa64 }))} />
       </AdminFormDialog>
 
       {loading ? <div className="text-center text-slate-400 py-12">Memuat...</div> : items.length === 0 ? (

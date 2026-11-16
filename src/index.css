@@ -265,6 +265,18 @@
   }
 }
 
+/* Reveal content once on entry to guide attention without delaying initial render. */
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 550ms ease-out, transform 550ms ease-out;
+}
+
+.scroll-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 /* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -273,6 +285,10 @@
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+  .scroll-reveal {
+    opacity: 1;
+    transform: none;
   }
 }
 

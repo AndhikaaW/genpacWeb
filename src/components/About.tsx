@@ -30,7 +30,7 @@ export default function About() {
 
           {/* Profile paragraph */}
           <p className="text-base sm:text-lg text-slate-600 leading-relaxed max-w-lg">
-            Genza Education adalah lembaga bimbingan belajar nonformal berpusat di Yogyakarta dengan lebih dari 150 center di Indonesia. Cabang Pacitan hadir untuk menemani siswa Pacitan dan sekitarnya meraih prestasi dengan pendekatan personal.
+            Genza Education adalah lembaga bimbingan belajar nonformal berpusat di Yogyakarta dengan lebih dari 170 center di Indonesia. Cabang Pacitan hadir untuk menemani siswa Pacitan dan sekitarnya meraih prestasi dengan pendekatan personal.
           </p>
 
           {/* Sticker notes */}

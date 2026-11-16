@@ -30,6 +30,23 @@ export default function App() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
+  useEffect(() => {
+    const sections = Array.from(document.querySelectorAll<HTMLElement>('[data-scroll-reveal]'))
+    if (!('IntersectionObserver' in window)) {
+      sections.forEach((section) => section.classList.add('is-visible'))
+      return
+    }
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return
+        entry.target.classList.add('is-visible')
+        observer.unobserve(entry.target)
+      })
+    }, { threshold: 0.12, rootMargin: '0px 0px -48px 0px' })
+    sections.forEach((section) => observer.observe(section))
+    return () => observer.disconnect()
+  }, [])
+
   return (
     <AppSettingsProvider>
     <main className="min-h-screen">
@@ -48,51 +65,51 @@ export default function App() {
 
         <TrustBar />
 
-        <section id="tentang" className="bg-white py-20">
+        <section id="tentang" data-scroll-reveal className="scroll-reveal bg-white py-20">
           <About />
         </section>
 
-        <section id="program" className="bg-[#F4F6FE] py-20">
+        <section id="program" data-scroll-reveal className="scroll-reveal bg-[#F4F6FE] py-20">
           <Programs />
         </section>
 
-        <section id="fasilitas" className="bg-[#22539F] py-20">
+        <section id="fasilitas" data-scroll-reveal className="scroll-reveal bg-[#22539F] py-20">
           <Facilities />
         </section>
 
-        <section id="kenya-genza" className="bg-white py-20">
+        <section id="kenya-genza" data-scroll-reveal className="scroll-reveal bg-white py-20">
           <WhyGenza />
         </section>
 
-        <section id="tutor" className="bg-[#F4F6FE] py-20">
+        <section id="tutor" data-scroll-reveal className="scroll-reveal bg-[#F4F6FE] py-20">
           <Tutors />
         </section>
 
-        <section id="prestasi" className="bg-[#22539F] py-20">
+        <section id="prestasi" data-scroll-reveal className="scroll-reveal bg-[#22539F] py-20">
           <Achievements />
         </section>
 
         {/* Gallery selalu render — component sendiri yang handle kosong/isi */}
-        <section id="galeri" className="bg-white py-20">
+        <section id="galeri" data-scroll-reveal className="scroll-reveal bg-white py-20">
           <Gallery />
         </section>
 
         {/* Testimoni: tampil form submit + daftar yang disetujui */}
         <Testimonials />
 
-        <section id="alur" className="bg-[#F4F6FE] py-20">
+        <section id="alur" data-scroll-reveal className="scroll-reveal bg-[#F4F6FE] py-20">
           <RegistrationFlow />
         </section>
 
-        <section id="biaya" className="bg-white py-20">
+        <section id="biaya" data-scroll-reveal className="scroll-reveal bg-white py-20">
           <Pricing />
         </section>
 
-        <section id="faq" className="bg-white py-20">
+        <section id="faq" data-scroll-reveal className="scroll-reveal bg-white py-20">
           <FAQ />
         </section>
 
-        <section id="lokasi" className="bg-[#F4F6FE] py-20">
+        <section id="lokasi" data-scroll-reveal className="scroll-reveal bg-[#F4F6FE] py-20">
           <Location />
         </section>
       </div>

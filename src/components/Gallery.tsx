@@ -18,22 +18,29 @@ export default function Gallery() {
 
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
         {photos.map((item, index) => (
-          <div
+          <figure
             key={item.id}
-            className="group relative aspect-[4/3] rounded-[20px] overflow-hidden"
-            style={{ transform: `rotate(${(index % 3 - 1) * 1.5}deg)`, transition: 'transform 0.3s ease' }}
-            onMouseEnter={(e) => (e.currentTarget.style.transform = 'rotate(0deg) scale(1.03)')}
-            onMouseLeave={(e) => (e.currentTarget.style.transform = `rotate(${(index % 3 - 1) * 1.5}deg)`)}
+            className="group min-w-0"
           >
-            <img
-              src={item.imageUrl}
-              alt={item.judul}
-              loading="lazy"
-              width={400}
-              height={300}
-              className="w-full h-full object-cover"
-            />
-          </div>
+            <div
+              className="relative aspect-[4/3] overflow-hidden rounded-[20px]"
+              style={{ transform: `rotate(${(index % 3 - 1) * 1.5}deg)`, transition: 'transform 0.3s ease' }}
+              onMouseEnter={(event) => { event.currentTarget.style.transform = 'rotate(0deg) scale(1.03)' }}
+              onMouseLeave={(event) => { event.currentTarget.style.transform = `rotate(${(index % 3 - 1) * 1.5}deg)` }}
+            >
+              <img
+                src={item.imageUrl}
+                alt={item.judul}
+                loading="lazy"
+                width={400}
+                height={300}
+                className="h-full w-full object-cover"
+              />
+            </div>
+            <figcaption className="mt-3 px-1 text-sm font-semibold leading-snug text-slate-800 sm:text-base">
+              {item.judul}
+            </figcaption>
+          </figure>
         ))}
       </div>
 

@@ -19,20 +19,20 @@ export default function RegistrationFlow() {
       </div>
 
       <div className="relative max-w-5xl mx-auto">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-          {steps.map((step, index) => {
+        <div className="grid grid-cols-2 items-stretch gap-x-4 gap-y-8 md:grid-cols-4 md:gap-6">
+          {steps.map((step) => {
             const Icon = step.icon
             return (
-              <div key={index} className="relative text-center">
-                <div className="inline-flex items-center justify-center w-20 h-20 bg-yellow-400 rounded-[20px] mb-6 relative z-10 shadow-card mx-auto">
+              <article key={step.num} className="relative flex h-full min-w-0 flex-col text-center">
+                <div className="relative z-10 mx-auto mb-5 flex h-20 w-20 flex-shrink-0 items-center justify-center rounded-[20px] bg-yellow-400 shadow-card">
                   <Icon className="w-9 h-9 text-[#22539F]" aria-hidden="true" />
                 </div>
-                <div className="bg-white rounded-[20px] p-5 border border-slate-100 shadow-sm">
-                  <div className="text-xs font-bold text-yellow-500 uppercase tracking-widest mb-2">Langkah {step.num}</div>
-                  <h3 className="text-base font-bold text-slate-800 mb-2">{step.title}</h3>
-                  <p className="text-slate-500 leading-relaxed text-sm">{step.description}</p>
+                <div className="flex min-h-[220px] flex-1 flex-col items-center rounded-[20px] border border-slate-100 bg-white p-4 shadow-sm sm:p-5">
+                  <div className="mb-2 text-xs font-bold uppercase tracking-widest text-amber-600">Langkah {step.num}</div>
+                  <h3 className="mb-2 text-base font-bold text-slate-800 sm:text-lg">{step.title}</h3>
+                  <p className="text-sm leading-relaxed text-slate-600">{step.description}</p>
                 </div>
-              </div>
+              </article>
             )
           })}
         </div>

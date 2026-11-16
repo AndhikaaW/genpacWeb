@@ -16,6 +16,14 @@ export default function OpeningSlider() {
   const [paused, setPaused] = useState(false)
 
   useEffect(() => {
+    const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const syncMotionPreference = () => setPaused(motionPreference.matches)
+    syncMotionPreference()
+    motionPreference.addEventListener('change', syncMotionPreference)
+    return () => motionPreference.removeEventListener('change', syncMotionPreference)
+  }, [])
+
+  useEffect(() => {
     setActiveIndex((index) => Math.min(index, Math.max(items.length - 1, 0)))
   }, [items.length])
 
@@ -54,8 +62,6 @@ export default function OpeningSlider() {
     <section
       id="hero"
       aria-label="Banner utama Genza Education"
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
       className="relative isolate flex min-h-[min(760px,100svh)] items-center overflow-hidden bg-[#22539F] text-white"
     >
       <div className="absolute inset-0 -z-20" aria-hidden="true">
@@ -90,8 +96,8 @@ export default function OpeningSlider() {
       </div>
 
       {items.length > 1 && (
-        <div className="absolute inset-x-0 bottom-6 flex items-center justify-center gap-4 sm:bottom-8">
-          <button onClick={showPrevious} aria-label="Banner sebelumnya" className="flex h-10 w-10 items-center justify-center rounded-full border border-white/50 bg-black/10 text-white backdrop-blur-sm transition hover:bg-white/20">
+        <div className="absolute inset-x-0 bottom-6 flex items-center justify-center gap-3 sm:bottom-8 sm:gap-4">
+          <button type="button" onClick={showPrevious} aria-label="Banner sebelumnya" className="flex h-11 w-11 items-center justify-center rounded-full border border-white/50 bg-black/10 text-white backdrop-blur-sm transition hover:bg-white/20">
             <ArrowLeft className="h-5 w-5" aria-hidden="true" />
           </button>
           <div className="flex items-center gap-2" role="tablist" aria-label="Pilih banner">
@@ -103,11 +109,11 @@ export default function OpeningSlider() {
                 aria-label={`Tampilkan banner ${index + 1}: ${banner.judul}`}
                 aria-selected={index === activeIndex}
                 onClick={() => setActiveIndex(index)}
-                className={`h-2.5 rounded-full transition-all ${index === activeIndex ? 'w-8 bg-yellow-400' : 'w-2.5 bg-white/70 hover:bg-white'}`}
+                className={`min-h-11 min-w-11 rounded-full p-4 transition-all before:block before:h-2.5 before:rounded-full ${index === activeIndex ? 'before:w-8 before:bg-yellow-400' : 'before:w-2.5 before:bg-white/70 hover:before:bg-white'}`}
               />
             ))}
           </div>
-          <button onClick={showNext} aria-label="Banner berikutnya" className="flex h-10 w-10 items-center justify-center rounded-full border border-white/50 bg-black/10 text-white backdrop-blur-sm transition hover:bg-white/20">
+          <button type="button" onClick={showNext} aria-label="Banner berikutnya" className="flex h-11 w-11 items-center justify-center rounded-full border border-white/50 bg-black/10 text-white backdrop-blur-sm transition hover:bg-white/20">
             <ArrowRight className="h-5 w-5" aria-hidden="true" />
           </button>
         </div>

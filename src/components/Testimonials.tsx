@@ -27,7 +27,7 @@ export default function Testimonials() {
   }
 
   return (
-    <section id="testimonials" className="bg-[#F4F6FE] py-20">
+    <section id="testimonials" data-scroll-reveal className="scroll-reveal bg-[#F4F6FE] py-20">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-12">
           <h2 className="text-3xl sm:text-4xl font-bold text-slate-800 mb-3">Apa Kata Mereka?</h2>

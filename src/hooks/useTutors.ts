@@ -13,6 +13,7 @@ export interface TutorItem {
 export function useTutors() {
   const [items, setItems] = useState<TutorItem[]>([])
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(false)
 
   useEffect(() => {
     let cancelled = false
@@ -27,10 +28,13 @@ export function useTutors() {
           urutan: d.data().urutan ?? 0,
         })))
       })
-      .catch(console.error)
+      .catch((loadError) => {
+        console.error('Gagal memuat tutor:', loadError)
+        if (!cancelled) setError(true)
+      })
       .finally(() => { if (!cancelled) setLoading(false) })
     return () => { cancelled = true }
   }, [])
 
-  return { items, loading }
+  return { items, loading, error }
 }

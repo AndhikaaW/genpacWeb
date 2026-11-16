@@ -38,7 +38,7 @@ export default function MasterTutor() {
   const del = async (t: TutorItem) => { if (confirm(`Hapus tutor "${t.nama}"?`)) await deleteDoc(doc(db, 'tutors', t.id)) }
 
   return (
-    <div className="p-4 md:p-6 max-w-screen-xl mx-auto">
+      <div className="w-full p-4 md:p-6">
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-xl font-bold text-slate-800">Master Tutor</h1>
         <button onClick={openAdd} className="px-4 py-2 bg-blue-600 text-white text-sm font-bold rounded-xl hover:bg-blue-700">+ Tambah Tutor</button>

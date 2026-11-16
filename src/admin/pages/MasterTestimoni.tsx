@@ -36,7 +36,7 @@ export default function MasterTestimoni() {
   const del = async (t: TestimoniItem) => { if (confirm(`Hapus testimoni dari "${t.nama}"?`)) await deleteDoc(doc(db, 'testimoni', t.id)) }
 
   return (
-    <div className="p-4 md:p-6 max-w-screen-xl mx-auto">
+    <div className="w-full p-4 md:p-6">
       <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-6">
         <h1 className="text-xl font-bold text-slate-800 flex-1">Moderasi Testimoni</h1>
         <div className="flex flex-wrap gap-2">

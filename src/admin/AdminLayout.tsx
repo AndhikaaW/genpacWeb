@@ -18,6 +18,7 @@ import {
   ClipboardList,
   KeyRound,
   CalendarDays,
+  Trophy,
 } from 'lucide-react'
 import { Button } from '../components/ui/button'
 import { hasPermission } from './rbac'
@@ -57,6 +58,7 @@ const NAV_GROUPS = [
       { label: 'Foto', to: '/admin/foto', icon: Image, permission: 'content.view' },
       { label: 'Banner Slider', to: '/admin/banner', icon: PanelsTopLeft, permission: 'content.view' },
       { label: 'Testimoni', to: '/admin/testimoni', icon: MessageSquare, permission: 'content.view' },
+      { label: 'Prestasi Siswa', to: '/admin/prestasi-siswa', icon: Trophy, permission: 'content.view' },
     ],
   },
   {

@@ -17,6 +17,7 @@ import UserManagementPage from './pages/UserManagementPage'
 import TutorAttendanceAdminPage from './pages/TutorAttendanceAdminPage'
 import TutorAccountsPage from './pages/TutorAccountsPage'
 import AgendaPage from './pages/AgendaPage'
+import MasterPrestasi from './pages/MasterPrestasi'
 import AdminLayout from './AdminLayout'
 import logoUrl from '../assets/G-logo.png'
 import { hasPermission, permissionForPath } from './rbac'
@@ -69,6 +70,7 @@ export default function AdminApp() {
     if (path === '/admin/jenjang') return <MasterJenjang />
     if (path === '/admin/fasilitas') return <MasterFasilitas />
     if (path === '/admin/testimoni') return <MasterTestimoni />
+    if (path === '/admin/prestasi-siswa') return <MasterPrestasi />
     if (path === '/admin/program') return <MasterProgram />
     return <AdminDashboard />
   })()

@@ -54,7 +54,7 @@ export default function TutorAttendanceAdminPage() {
   const visibleRecords = dateFilter ? records.filter((record) => attendanceDateKey(record) === dateFilter) : records
 
   return (
-    <main className="mx-auto max-w-6xl p-4 md:p-6">
+    <main className="w-full p-4 md:p-6">
       <header className="mb-6 flex flex-wrap items-end justify-between gap-4"><div><h2 className="text-xl font-bold text-slate-900">Absensi Tutor</h2><p className="mt-1 text-sm text-slate-600">Jurnal sesi, tanda tangan, dan catatan tutor.</p></div><div className="flex flex-wrap items-end gap-3"><label className="space-y-1 text-sm font-medium text-slate-800">Filter tanggal<input type="date" value={dateFilter} onChange={(event) => setDateFilter(event.target.value)} className="block min-h-11 rounded-md border border-slate-300 px-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-700" /></label><Button type="button" variant="outline" onClick={() => setQrOpen(true)} className="min-h-11">Tampilkan QR Absensi</Button></div></header>
       {error && <p role="alert" className="mb-4 rounded-md border border-red-200 bg-red-50 p-3 text-sm text-red-800">{error}</p>}
       {loading ? <div aria-busy="true" className="space-y-3">{Array.from({ length: 4 }).map((_, index) => <Skeleton key={index} className="h-36 w-full" />)}<span className="sr-only">Memuat absensi tutor...</span></div> : visibleRecords.length === 0 ? <p className="rounded-lg border border-dashed border-slate-300 bg-white p-10 text-center text-sm text-slate-600">{records.length ? 'Tidak ada absensi pada tanggal tersebut.' : 'Belum ada catatan absensi tutor.'}</p> : <div className="space-y-4">{visibleRecords.map((record) => <AttendanceCard key={record.id} record={record} />)}</div>}

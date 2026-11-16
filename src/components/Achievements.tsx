@@ -1,6 +1,9 @@
+import { useState } from 'react'
 import { Award } from 'lucide-react'
-import { SITE_CONFIG } from '../lib/config'
 import { cn } from '../lib/utils'
+import { usePrestasi, type PrestasiItem } from '../hooks/usePrestasi'
+import ResponsiveCarousel from './ResponsiveCarousel'
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from './ui/dialog'
 
 const awards = [
   {
@@ -14,7 +17,8 @@ const awards = [
 ]
 
 export default function Achievements() {
-  const hasTestimonials = (SITE_CONFIG.testimonials as Array<{name: string, role: string, quote: string}>).length > 0
+  const { items: students, loading, error } = usePrestasi()
+  const [selectedStudent, setSelectedStudent] = useState<PrestasiItem | null>(null)
 
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -56,44 +60,33 @@ export default function Achievements() {
         ))}
       </div>
 
-      {/* Testimonials as WhatsApp-style bubbles */}
-      <div className="max-w-2xl mx-auto">
-        <h3 className="text-xl font-bold text-white mb-6 text-center">Kata Siswa</h3>
-
-        {hasTestimonials ? (
-          <div className="space-y-4">
-            {(SITE_CONFIG.testimonials as Array<{name: string, role: string, quote: string}>).map((t, index) => (
-              <div
-                key={index}
-                className={cn(
-                  'flex',
-                  index % 2 === 0 ? 'justify-start' : 'justify-end'
-                )}
-              >
-                <div className={cn(
-                  'max-w-xs rounded-2xl px-5 py-4',
-                  index % 2 === 0
-                    ? 'bg-white rounded-tl-sm'
-                    : 'bg-yellow-400 rounded-tr-sm'
-                )}>
-                  <p className={cn('text-sm leading-relaxed mb-2', index % 2 === 0 ? 'text-slate-700' : 'text-[#22539F]')}>
-                    {t.quote}
-                  </p>
-                  <p className={cn('text-xs font-semibold', index % 2 === 0 ? 'text-slate-500' : 'text-[#22539F]/70')}>
-                    {t.name} · {t.role}
-                  </p>
-                </div>
-              </div>
+      {!loading && !error && students.length > 0 && (
+        <div className="mt-16">
+          <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+            <div><h3 className="text-2xl font-bold text-white sm:text-3xl">Prestasi Siswa Pacitan</h3><p className="mt-2 text-sm text-blue-100">Pencapaian siswa Genza yang telah dikonfirmasi.</p></div>
+          </div>
+          <ResponsiveCarousel count={students.length} label="Prestasi siswa" gridClassName="md:grid-cols-2 lg:grid-cols-3">
+            {students.map((student) => (
+              <article key={student.id} className="w-[82vw] max-w-[340px] flex-shrink-0 snap-start overflow-hidden rounded-2xl border border-white/20 bg-white text-slate-800 md:w-auto md:max-w-none md:flex-shrink">
+                <button type="button" onClick={() => setSelectedStudent(student)} aria-label={`Perbesar foto prestasi ${student.nama}`} className="block w-full focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-inset focus-visible:ring-yellow-400">
+                  <img src={student.fotoBase64} alt={`Foto ${student.nama}`} width={480} height={360} loading="lazy" className="aspect-[4/3] w-full bg-blue-900/20 object-cover transition-transform duration-300 hover:scale-[1.03]" />
+                </button>
+                <div className="p-5"><p className="text-xs font-bold uppercase tracking-wide text-amber-700">{student.prestasi}</p><h4 className="mt-2 text-lg font-bold text-slate-900">{student.nama}</h4>{student.sekolah && <p className="mt-1 text-sm text-slate-600">{student.sekolah}</p>}{student.keterangan && <p className="mt-3 border-t border-slate-100 pt-3 text-sm leading-relaxed text-slate-700">{student.keterangan}</p>}</div>
+              </article>
             ))}
-          </div>
-        ) : (
-          <div className="flex justify-start">
-            <div className="bg-white rounded-2xl rounded-tl-sm px-5 py-4 max-w-xs">
-              <p className="text-sm text-slate-500 italic">Kisah sukses siswa Genza Pacitan segera hadir.</p>
-            </div>
-          </div>
-        )}
-      </div>
+          </ResponsiveCarousel>
+        </div>
+      )}
+      <Dialog open={!!selectedStudent} onOpenChange={(open) => { if (!open) setSelectedStudent(null) }}>
+        <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-4xl">
+          <DialogHeader>
+            <DialogTitle>{selectedStudent?.nama}</DialogTitle>
+            <DialogDescription>{selectedStudent?.prestasi}{selectedStudent?.sekolah ? ` · ${selectedStudent.sekolah}` : ''}</DialogDescription>
+          </DialogHeader>
+          {selectedStudent && <img src={selectedStudent.fotoBase64} alt={`Foto prestasi ${selectedStudent.nama}`} width={1600} height={1200} className="max-h-[72vh] w-full rounded-lg bg-slate-100 object-contain" />}
+          {selectedStudent?.keterangan && <p className="text-sm leading-relaxed text-slate-600">{selectedStudent.keterangan}</p>}
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

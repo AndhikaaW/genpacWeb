@@ -69,7 +69,7 @@ export default function RegistrationDetail({ id }: { id: string }) {
   }
 
   return (
-    <div className="p-4 md:p-6 max-w-3xl mx-auto">
+    <div className="w-full p-4 md:p-6">
       {/* Back + actions */}
       <div className="flex items-center gap-2 mb-5">
         <Link to="/admin/dashboard" className="flex items-center gap-1 text-sm text-slate-500 hover:text-slate-700 transition-colors">

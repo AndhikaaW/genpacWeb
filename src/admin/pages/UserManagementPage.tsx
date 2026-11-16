@@ -91,7 +91,7 @@ export default function UserManagementPage() {
   }
 
   return (
-    <main className="mx-auto max-w-screen-xl p-4 md:p-6">
+    <main className="w-full p-4 md:p-6">
       <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
         <div><h2 className="text-xl font-bold text-slate-900">Pengelolaan Pengguna</h2><p className="mt-1 max-w-2xl text-sm text-slate-600">Buat akun admin dan batasi akses sesuai tanggung jawabnya.</p></div>
         <button type="button" onClick={() => setShowCreate(true)} className="min-h-11 rounded-md bg-blue-700 px-4 text-sm font-semibold text-white hover:bg-blue-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-700 focus-visible:ring-offset-2">Tambah Pengguna</button>

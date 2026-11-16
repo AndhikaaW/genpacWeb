@@ -1,9 +1,14 @@
+import { useState } from 'react'
 import { useGallery } from '../hooks/useGallery'
+import type { GaleriItem } from '../hooks/useGallery'
 import { Skeleton } from './ui/skeleton'
+import ResponsiveCarousel from './ResponsiveCarousel'
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from './ui/dialog'
 
 export default function Gallery() {
   const { items, loading, hasMore, error, loadMore } = useGallery()
   const photos = items
+  const [selectedPhoto, setSelectedPhoto] = useState<GaleriItem | null>(null)
 
   if (!loading && photos.length === 0 && !error) return null
 
@@ -16,33 +21,38 @@ export default function Gallery() {
 
       {error && <p role="alert" className="mb-6 rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-700">{error}</p>}
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+      {photos.length > 0 && <ResponsiveCarousel count={photos.length} label="Foto galeri" gridClassName="md:grid-cols-3">
         {photos.map((item, index) => (
-          <figure
-            key={item.id}
-            className="group min-w-0"
-          >
-            <div
-              className="relative aspect-[4/3] overflow-hidden rounded-[20px]"
-              style={{ transform: `rotate(${(index % 3 - 1) * 1.5}deg)`, transition: 'transform 0.3s ease' }}
-              onMouseEnter={(event) => { event.currentTarget.style.transform = 'rotate(0deg) scale(1.03)' }}
-              onMouseLeave={(event) => { event.currentTarget.style.transform = `rotate(${(index % 3 - 1) * 1.5}deg)` }}
+          <figure key={item.id} className="w-[82vw] max-w-[360px] flex-shrink-0 snap-start md:w-auto md:max-w-none md:flex-shrink">
+            <button
+              type="button"
+              onClick={() => setSelectedPhoto(item)}
+              aria-label={`Perbesar foto: ${item.judul}`}
+              className="block w-full rounded-[20px] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#F6CC46]"
             >
-              <img
-                src={item.imageUrl}
-                alt={item.judul}
-                loading="lazy"
-                width={400}
-                height={300}
-                className="h-full w-full object-cover"
-              />
-            </div>
-            <figcaption className="mt-3 px-1 text-sm font-semibold leading-snug text-slate-800 sm:text-base">
-              {item.judul}
-            </figcaption>
+              <span
+                className="block aspect-[4/3] overflow-hidden rounded-[20px] transition-transform duration-300"
+                style={{ transform: `rotate(${(index % 3 - 1) * 1.5}deg)` }}
+                onMouseEnter={(event) => { event.currentTarget.style.transform = 'rotate(0deg) scale(1.03)' }}
+                onMouseLeave={(event) => { event.currentTarget.style.transform = `rotate(${(index % 3 - 1) * 1.5}deg)` }}
+              >
+                <img src={item.imageUrl} alt={item.judul} loading="lazy" width={400} height={300} className="h-full w-full object-cover" />
+              </span>
+            </button>
+            <figcaption className="mt-3 px-1 text-sm font-semibold leading-snug text-slate-800 sm:text-base">{item.judul}</figcaption>
           </figure>
         ))}
-      </div>
+      </ResponsiveCarousel>}
+
+      <Dialog open={!!selectedPhoto} onOpenChange={(open) => { if (!open) setSelectedPhoto(null) }}>
+        <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-4xl">
+          <DialogHeader>
+            <DialogTitle>{selectedPhoto?.judul}</DialogTitle>
+            {selectedPhoto?.deskripsi && <DialogDescription>{selectedPhoto.deskripsi}</DialogDescription>}
+          </DialogHeader>
+          {selectedPhoto && <img src={selectedPhoto.imageUrl} alt={selectedPhoto.judul} width={1600} height={1200} className="max-h-[72vh] w-full rounded-lg bg-slate-100 object-contain" />}
+        </DialogContent>
+      </Dialog>
 
       {/* Skeleton saat loading halaman pertama */}
       {loading && items.length === 0 && (

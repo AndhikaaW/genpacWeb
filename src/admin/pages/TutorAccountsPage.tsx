@@ -83,7 +83,7 @@ export default function TutorAccountsPage() {
   }
 
   return (
-    <main className="mx-auto max-w-screen-xl p-4 md:p-6">
+    <main className="w-full p-4 md:p-6">
       <header className="mb-6 flex flex-wrap items-end justify-between gap-4"><div><h2 className="text-xl font-bold text-slate-900">Akun Tutor</h2><p className="mt-1 text-sm text-slate-600">Buat login portal tutor dan kelola status aksesnya.</p></div><button type="button" onClick={() => setShowForm(true)} className="min-h-11 rounded-md bg-blue-700 px-4 text-sm font-semibold text-white hover:bg-blue-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-700 focus-visible:ring-offset-2">Tambah Akun Tutor</button></header>
       {error && <p role="alert" className="mb-4 rounded-md border border-red-200 bg-red-50 p-3 text-sm text-red-800">{error}</p>}
       {loading ? <div aria-busy="true" className="space-y-3">{Array.from({ length: 3 }).map((_, index) => <Skeleton key={index} className="h-16 w-full" />)}<span className="sr-only">Memuat akun tutor...</span></div> : accounts.length === 0 ? <p className="rounded-lg border border-dashed border-slate-300 bg-white p-10 text-center text-sm text-slate-600">Belum ada akun tutor. Buat akun untuk memberikan akses ke portal absensi.</p> : (

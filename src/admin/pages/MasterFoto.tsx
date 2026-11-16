@@ -41,7 +41,7 @@ export default function MasterFoto() {
   const del = async (item: FotoItem) => { if (confirm(`Hapus "${item.judul}"?`)) await deleteDoc(doc(db, 'galeri_foto', item.id)) }
 
   return (
-    <div className="p-4 md:p-6 max-w-5xl mx-auto">
+    <div className="w-full p-4 md:p-6">
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-xl font-bold text-slate-800">Master Foto Galeri</h1>
         <button onClick={openAdd} className="px-4 py-2 bg-blue-600 text-white text-sm font-bold rounded-xl hover:bg-blue-700 transition-colors">+ Tambah Foto</button>

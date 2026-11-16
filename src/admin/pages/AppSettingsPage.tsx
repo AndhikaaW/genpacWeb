@@ -86,7 +86,7 @@ export default function AppSettingsPage() {
   const updateField = <K extends keyof SettingsForm>(key: K, value: SettingsForm[K]) => setForm((current) => ({ ...current, [key]: value }))
 
   return (
-    <div className="mx-auto max-w-screen-xl p-4 md:p-6">
+    <div className="w-full p-4 md:p-6">
       <div className="mb-6 flex items-center justify-between gap-3">
         <div><h1 className="text-xl font-bold text-slate-800">Pengaturan Aplikasi</h1><p className="mt-1 text-sm text-slate-500">Informasi cabang yang dipakai di landing page dan tautan kontak.</p></div>
         <button onClick={() => { setForm(settings); setShowForm(true) }} disabled={loading} className="min-h-10 flex-shrink-0 rounded-md bg-blue-600 px-4 text-sm font-semibold text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50">Ubah Pengaturan</button>

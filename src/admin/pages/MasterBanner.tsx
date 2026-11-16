@@ -58,7 +58,7 @@ export default function MasterBanner() {
   }
 
   return (
-    <div className="mx-auto max-w-screen-xl p-4 md:p-6">
+    <div className="w-full p-4 md:p-6">
       <div className="mb-6 flex items-center justify-between gap-3">
         <div><h1 className="text-xl font-bold text-slate-800">Master Banner Slider</h1><p className="mt-1 text-sm text-slate-500">Banner aktif tampil bergantian pada layar pembuka landing page.</p></div>
         <button onClick={openAdd} className="min-h-10 flex-shrink-0 rounded-md bg-blue-600 px-4 text-sm font-semibold text-white hover:bg-blue-700">+ Tambah Banner</button>

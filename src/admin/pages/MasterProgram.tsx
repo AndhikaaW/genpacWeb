@@ -36,7 +36,7 @@ export default function MasterProgram() {
   const del = async (p: ProgramItem) => { if (confirm(`Hapus program "${p.nama}"?`)) await deleteDoc(doc(db, 'program_bimbingan', p.id)) }
 
   return (
-    <div className="p-4 md:p-6 max-w-screen-xl mx-auto">
+    <div className="w-full p-4 md:p-6">
       <div className="mb-6 flex items-center justify-between gap-3">
         <h1 className="text-xl font-bold text-slate-800">Master Program Bimbingan</h1>
         <button onClick={openAdd} className="min-h-10 rounded-md bg-blue-600 px-4 text-sm font-semibold text-white hover:bg-blue-700">+ Tambah Program</button>

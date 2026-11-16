@@ -1,0 +1,273 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isAdmin() {
+      return request.auth != null && adminProfile().data.aktif == true &&
+        adminProfile().data.role in ['superadmin', 'operator', 'editor', 'viewer'];
+    }
+
+    function adminProfile() {
+      return get(/databases/$(database)/documents/admins/$(request.auth.uid));
+    }
+
+    function isSuperadmin() {
+      return isAdmin() && adminProfile().data.role == 'superadmin';
+    }
+
+    function canViewRegistrations() {
+      return isAdmin() && adminProfile().data.role in ['superadmin', 'operator', 'viewer'];
+    }
+
+    function canEditRegistrations() {
+      return isAdmin() && adminProfile().data.role in ['superadmin', 'operator'];
+    }
+
+    function canEditContent() {
+      return isAdmin() && adminProfile().data.role in ['superadmin', 'editor'];
+    }
+
+    function tutorProfile() {
+      return get(/databases/$(database)/documents/tutor_accounts/$(request.auth.uid));
+    }
+
+    function isActiveTutor() {
+      return request.auth != null
+        && exists(/databases/$(database)/documents/tutor_accounts/$(request.auth.uid))
+        && tutorProfile().data.role == 'tutor'
+        && tutorProfile().data.aktif == true;
+    }
+
+    function canManageTutorAttendance() {
+      return isAdmin() && adminProfile().data.role in ['superadmin', 'operator'];
+    }
+
+    function canManageAgenda() {
+      return isAdmin() && adminProfile().data.role in ['superadmin', 'operator'];
+    }
+
+    function isValidTutorAttendance(data) {
+      return data.keys().hasAll([
+          'tutor_uid', 'tutor_nama', 'waktu_selesai',
+          'bab', 'sub_bab', 'rumusan_poin', 'hal', 'catatan_siswa',
+          'signature_base64', 'created_at'
+        ])
+        && data.keys().hasOnly([
+          'tutor_uid', 'tutor_nama', 'waktu_selesai',
+          'bab', 'sub_bab', 'rumusan_poin', 'hal', 'catatan_siswa',
+          'signature_base64', 'created_at'
+        ])
+        && data.tutor_uid == request.auth.uid
+        && data.tutor_nama == tutorProfile().data.nama
+        && data.waktu_selesai is timestamp
+        && data.waktu_selesai == request.time
+        && data.bab is string && data.bab.size() > 0 && data.bab.size() <= 200
+        && data.sub_bab is string && data.sub_bab.size() <= 200
+        && data.rumusan_poin is string && data.rumusan_poin.size() > 0 && data.rumusan_poin.size() <= 3000
+        && data.hal is string && data.hal.size() <= 200
+        && data.catatan_siswa is string && data.catatan_siswa.size() <= 3000
+        && data.signature_base64 is string
+        && data.signature_base64.matches('^data:image/png;base64,[A-Za-z0-9+/=]+$')
+        && data.signature_base64.size() <= 150000
+        && data.created_at is timestamp
+        && data.created_at == request.time;
+    }
+
+    function isNonEmptyString(v) {
+      return v is string && v.size() > 0;
+    }
+
+    function isOptionalTimestamp(v) {
+      return v == null || v is timestamp;
+    }
+
+    function isValidStudentData(data) {
+      return isNonEmptyString(data.nama_siswa)
+        && isNonEmptyString(data.tempat_lahir)
+        && data.tanggal_lahir is timestamp
+        && isNonEmptyString(data.agama)
+        && isNonEmptyString(data.no_wa)
+        && data.email is string
+        && isNonEmptyString(data.sekolah_kelas_jurusan);
+    }
+
+    function isValidParentData(data) {
+      return isNonEmptyString(data.nama_ayah)
+        && isNonEmptyString(data.kontak_ayah)
+        && data.pekerjaan_ayah is string
+        && isNonEmptyString(data.nama_ibu)
+        && isNonEmptyString(data.kontak_ibu)
+        && data.pekerjaan_ibu is string;
+    }
+
+    function isValidGuidanceData(data) {
+      return isNonEmptyString(data.alamat)
+        && isNonEmptyString(data.daftar_untuk_kelas)
+        && data.minat_kelas is string
+        && isOptionalTimestamp(data.start_bimbingan_dari)
+        && isOptionalTimestamp(data.start_bimbingan_sd)
+        && isNonEmptyString(data.kelas_di_genza);
+    }
+
+    function isValidStatementData(data) {
+      return isNonEmptyString(data.nama_pernyataan)
+        && isNonEmptyString(data.jenjang)
+        && data.disetujui == true
+        && data.waktu_disetujui is timestamp;
+    }
+
+    function isValidRegistrationPayload(data) {
+      return data.keys().hasAll([
+          'kode_pendaftaran',
+          'status',
+          'petugas_cabang',
+          'created_at',
+          'updated_at',
+          'student_data',
+          'parent_data',
+          'guidance_data',
+          'program_bimbingan',
+          'statement_data',
+          'payment_data',
+          'pdf_document'
+        ])
+        && data.status == 'baru'
+        && isNonEmptyString(data.kode_pendaftaran)
+        && data.created_at is timestamp
+        && data.updated_at is timestamp
+        && isValidStudentData(data.student_data)
+        && isValidParentData(data.parent_data)
+        && isValidGuidanceData(data.guidance_data)
+        && isValidStatementData(data.statement_data)
+        && data.program_bimbingan is list
+        && data.program_bimbingan.size() > 0
+        // payment_data tidak boleh diisi customer saat create (harus default)
+        && data.payment_data.biaya_bimbingan == 0
+        && data.payment_data.asf_pendaftaran == 0
+        && (!('installments' in data.payment_data) ||
+          (data.payment_data.installments is list &&
+            data.payment_data.installments.size() == 0));
+    }
+
+    // ====== REGISTRATIONS ======
+    match /registrations/{registrationId} {
+      // Publik hanya boleh membuat dokumen baru dengan data valid dan status "baru".
+      allow create: if isValidRegistrationPayload(request.resource.data);
+      allow read: if canViewRegistrations();
+      allow update, delete: if canEditRegistrations();
+    }
+
+    // ====== ADMINS ======
+    match /admins/{uid} {
+      allow read: if (request.auth != null && request.auth.uid == uid) || isSuperadmin();
+      allow create: if isSuperadmin()
+        && request.resource.data.role in ['superadmin', 'operator', 'editor', 'viewer']
+        && request.resource.data.aktif == true
+        && request.resource.data.uid == uid;
+      allow update: if isSuperadmin() && request.auth.uid != uid
+        && request.resource.data.role in ['superadmin', 'operator', 'editor', 'viewer']
+        && request.resource.data.uid == resource.data.uid;
+      allow delete: if false;
+    }
+
+    match /tutor_accounts/{uid} {
+      allow read: if isSuperadmin() || (request.auth != null && request.auth.uid == uid);
+      allow create: if isSuperadmin()
+        && request.resource.data.uid == uid
+        && request.resource.data.role == 'tutor'
+        && request.resource.data.aktif == true
+        && request.resource.data.nama is string
+        && request.resource.data.nama.size() > 0
+        && request.resource.data.nama.size() <= 200
+        && request.resource.data.email is string
+        && request.resource.data.email.size() <= 254;
+      allow update: if isSuperadmin()
+        && request.resource.data.uid == resource.data.uid
+        && request.resource.data.role == 'tutor'
+        && request.resource.data.aktif is bool
+        && request.resource.data.nama is string
+        && request.resource.data.nama.size() > 0
+        && request.resource.data.nama.size() <= 200
+        && request.resource.data.email is string
+        && request.resource.data.email.size() <= 254;
+      allow delete: if false;
+    }
+
+    match /tutor_attendance/{attendanceId} {
+      allow create: if isActiveTutor() && isValidTutorAttendance(request.resource.data);
+      allow read: if canManageTutorAttendance()
+        || (isActiveTutor() && resource.data.tutor_uid == request.auth.uid);
+      allow update, delete: if isSuperadmin();
+    }
+
+    // ====== AGENDA OPERASIONAL ======
+    match /agenda/{agendaId} {
+      allow read, create, update, delete: if canManageAgenda();
+    }
+
+    // ====== COUNTERS (kode pendaftaran) ======
+    // Counter berisi tanggal dan nomor, dan dibaca untuk membuat kode pendaftaran.
+    match /counters/{docId} {
+      allow read: if true;
+      allow write: if request.resource.data.keys().hasOnly(['tanggal', 'last_number']);
+    }
+
+    // ====== PROGRAM BIMBINGAN ======
+    match /program_bimbingan/{docId} {
+      allow read: if true;
+      allow write: if canEditContent();
+    }
+
+    // ====== GALERI FOTO ======
+    match /galeri_foto/{docId} {
+      allow read: if true;
+      allow create, update, delete: if canEditContent();
+    }
+
+    // ====== TUTORS ======
+    match /tutors/{docId} {
+      allow read: if true;
+      allow write: if canEditContent();
+    }
+
+    // ====== JENJANG PROGRAM ======
+    match /jenjang_program/{docId} {
+      allow read: if true;
+      allow write: if canEditContent();
+    }
+
+    // ====== FASILITAS G-SYSTEM ======
+    match /fasilitas_gsystem/{docId} {
+      allow read: if true;
+      allow write: if canEditContent();
+    }
+
+    // ====== TESTIMONI ======
+    match /testimoni/{docId} {
+      allow create: if request.resource.data.keys().hasAll(['nama', 'asal_sekolah', 'program', 'quote', 'status', 'created_at'])
+        && request.resource.data.status == 'pending'
+        && request.resource.data.nama is string && request.resource.data.nama.size() > 0
+        && request.resource.data.quote is string && request.resource.data.quote.size() > 0;
+      allow read: if isAdmin();
+      allow update, delete: if canEditContent();
+    }
+
+    // ====== PRESTASI SISWA ======
+    // Admin dapat melihat semua data; landing page hanya meminta data aktif.
+    match /prestasi_siswa/{docId} {
+      allow read: if isAdmin() || resource.data.aktif == true;
+      allow create, update, delete: if canEditContent();
+    }
+
+    match /landing_banners/{docId} {
+      allow read: if true;
+      allow create, update, delete: if canEditContent();
+    }
+
+    match /app_settings/{docId} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin() && adminProfile().data.role in ['superadmin', 'editor'];
+    }
+  }
+}

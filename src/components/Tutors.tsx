@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useTutors, type TutorItem } from '../hooks/useTutors'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from './ui/dialog'
 import { Skeleton } from './ui/skeleton'
+import ResponsiveCarousel from './ResponsiveCarousel'
 
 export default function Tutors() {
   const { items, loading, error } = useTutors()
@@ -30,11 +31,11 @@ export default function Tutors() {
         <p className="max-w-xs border-l-4 border-[#F6CC46] pl-4 text-sm leading-relaxed text-slate-600">Kenali tutor yang akan membantu kamu belajar lebih terarah.</p>
       </div>
 
-      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      <ResponsiveCarousel count={items.length} label="Daftar tutor" gridClassName="md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {items.map((tutor) => (
           <article
             key={tutor.id}
-            className="group relative min-w-0 overflow-hidden rounded-2xl border border-blue-100/80 bg-white transition duration-300 hover:-translate-y-1 hover:border-blue-200 hover:shadow-[0_16px_36px_rgba(34,83,159,0.14)]"
+            className="group relative w-[82vw] max-w-[360px] flex-shrink-0 snap-start overflow-hidden rounded-2xl border border-blue-100/80 bg-white transition duration-300 hover:-translate-y-1 hover:border-blue-200 hover:shadow-[0_16px_36px_rgba(34,83,159,0.14)] md:w-auto md:max-w-none md:flex-shrink"
           >
             <div className="relative aspect-[4/3] overflow-hidden bg-[#E8EFFB]">
               {tutor.fotoBa64 ? (
@@ -59,7 +60,7 @@ export default function Tutors() {
             </div>
           </article>
         ))}
-      </div>
+      </ResponsiveCarousel>
       <Dialog open={!!selectedTutor} onOpenChange={(open) => { if (!open) setSelectedTutor(null) }}>
         <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-3xl">
           <DialogHeader>

@@ -26,6 +26,7 @@ describe('admin role permissions', () => {
     expect(permissionForPath('/admin/pengguna')).toBe('users.manage')
     expect(permissionForPath('/admin/pendaftar/abc')).toBe('registrations.view')
     expect(permissionForPath('/admin/banner')).toBe('content.view')
+    expect(permissionForPath('/admin/prestasi-siswa')).toBe('content.view')
     expect(permissionForPath('/admin/pengaturan')).toBe('settings.edit')
     expect(permissionForPath('/admin/absensi-tutor')).toBe('tutor_attendance.view')
     expect(permissionForPath('/admin/akun-tutor')).toBe('users.manage')

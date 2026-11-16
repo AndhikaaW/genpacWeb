@@ -1,13 +1,15 @@
 import { waLink } from '../lib/config'
 import { ExternalLink, ArrowRight } from 'lucide-react'
 import { useAppSettings, useAppSettingsLoading } from '../hooks/AppSettingsContext'
+import { useJenjang } from '../hooks/useJenjang'
 import { Skeleton } from './ui/skeleton'
 
 export default function Footer() {
   const settings = useAppSettings()
   const settingsLoading = useAppSettingsLoading()
+  const { items: programs, loading: programsLoading } = useJenjang()
 
-  if (settingsLoading) {
+  if (settingsLoading || programsLoading) {
     return (
       <footer aria-busy="true" className="bg-[#22539F] px-4 py-12">
         <div className="container mx-auto max-w-6xl">
@@ -50,11 +52,8 @@ export default function Footer() {
           <div className="flex flex-col md:flex-row gap-10 justify-between mb-10">
             {/* Brand */}
             <div className="max-w-xs">
-              <div className="flex items-center gap-2 mb-4">
-                <div className="w-10 h-10 bg-yellow-400 rounded-[10px] flex items-center justify-center">
-                  <span className="text-[#22539F] font-bold text-lg">G</span>
-                </div>
-                <span className="text-white font-bold text-lg">genza {settings.branch.toUpperCase()}</span>
+              <div className="mb-4">
+                <img src="/logo_genza.png" alt={`Genza Education ${settings.branch}`} width={768} height={425} className="h-16 w-44" />
               </div>
               <p className="text-blue-200 text-sm leading-relaxed mb-4">
                 Bimbel yang Aku Banget di Pacitan. Membangun generasi cerdas dan berprestasi.
@@ -72,16 +71,16 @@ export default function Footer() {
 
             {/* Links */}
             <div className="flex flex-wrap gap-10">
-              <div>
+              {programs.length > 0 && <div>
                 <h3 className="text-white font-semibold mb-4 text-sm uppercase tracking-wide">Program</h3>
                 <ul className="space-y-2.5">
-                  {['SD/MI', 'SMP/MTs', 'SMA/MA', 'UTBK-SNBT', 'Sekdin & TNI/Polri', 'G-Advanced'].map((item) => (
-                    <li key={item}>
-                      <a href="#program" className="text-blue-200 hover:text-white text-sm transition-colors cursor-pointer">{item}</a>
+                  {programs.map((item) => (
+                    <li key={item.id}>
+                      <a href="#program" className="text-blue-200 hover:text-white text-sm transition-colors cursor-pointer">{item.title}</a>
                     </li>
                   ))}
                 </ul>
-              </div>
+              </div>}
               <div>
                 <h3 className="text-white font-semibold mb-4 text-sm uppercase tracking-wide">Halaman</h3>
                 <ul className="space-y-2.5">

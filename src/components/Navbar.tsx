@@ -126,7 +126,7 @@ export default function Navbar({
               Pengumuman
             </a>
             <a
-              href="https://genzaeducationpacitan.online/#/daftar"
+              href="https://genzaeducationpacitan.online/daftar"
               target="_blank"
               rel="noopener"
               className="ml-2 px-5 py-2.5 bg-gradient-to-r from-blue-500 to-blue-600 text-white text-sm font-semibold rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all hover:shadow-md active:scale-95 flex items-center gap-2"

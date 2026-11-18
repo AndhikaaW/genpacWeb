@@ -2,6 +2,17 @@
 <html lang="id">
   <head>
     <meta charset="UTF-8" />
+    <script>
+      // Decode path yang di-encode oleh 404.html, restore via history.replaceState
+      (function() {
+        var params = new URLSearchParams(window.location.search);
+        var p = params.get('p');
+        if (p) {
+          var h = params.get('h') || '';
+          history.replaceState(null, '', decodeURIComponent(p) + decodeURIComponent(h));
+        }
+      })();
+    </script>
     <link rel="icon" type="image/png" href="/favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Bimbel Genza Education Cabang Pacitan</title>

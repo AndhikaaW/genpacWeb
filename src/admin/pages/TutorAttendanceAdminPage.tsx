@@ -66,7 +66,7 @@ export default function TutorAttendanceAdminPage() {
           </DialogHeader>
           <div className="flex flex-col items-center gap-4 py-2">
             {qrDataUrl ? <img src={qrDataUrl} alt="QR untuk membuka portal absensi tutor" width={320} height={320} className="h-64 w-64 rounded-md border bg-white p-2" /> : <p role={qrError ? 'alert' : 'status'} className="text-sm text-muted-foreground">{qrError ?? 'Membuat QR absensi...'}</p>}
-            <p className="break-all text-center text-xs text-muted-foreground">{window.location.origin}{window.location.pathname}#/tutor/absensi</p>
+            <p className="break-all text-center text-xs text-muted-foreground">{window.location.origin}/tutor/absensi</p>
             {(window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') && <p className="text-center text-xs text-amber-800">QR ini memakai alamat localhost untuk pengujian. Setelah aplikasi di-deploy, unduh QR dari alamat produksi agar bisa dipindai dari perangkat lain.</p>}
             {qrDataUrl && <a href={qrDataUrl} download="qr-absensi-tutor.png" className="inline-flex min-h-11 items-center justify-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">Unduh QR</a>}
           </div>

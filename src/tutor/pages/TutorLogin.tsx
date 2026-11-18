@@ -62,7 +62,7 @@ export default function TutorLogin() {
           {resetMessage && <p role="status" className="rounded-md border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-800">{resetMessage}</p>}
           <button type="submit" disabled={loading} className="min-h-11 w-full rounded-md bg-blue-700 px-4 text-sm font-semibold text-white hover:bg-blue-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-700 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">{loading ? 'Memproses...' : 'Masuk sebagai tutor'}</button>
         </form>
-        <p className="mt-6 text-center text-sm text-slate-600"><a className="min-h-11 inline-flex items-center px-2 text-blue-700 underline-offset-4 hover:underline" href="#/admin/login">Masuk sebagai admin</a></p>
+        <p className="mt-6 text-center text-sm text-slate-600"><a className="min-h-11 inline-flex items-center px-2 text-blue-700 underline-offset-4 hover:underline" href="/admin/login">Masuk sebagai admin</a></p>
       </div>
     </main>
   )

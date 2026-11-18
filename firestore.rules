@@ -269,5 +269,11 @@ service cloud.firestore {
       allow read: if true;
       allow create, update, delete: if isAdmin() && adminProfile().data.role in ['superadmin', 'editor'];
     }
+
+    // ====== PENGUMUMAN ======
+    match /pengumuman/{docId} {
+      allow read: if resource.data.aktif == true || isAdmin();
+      allow create, update, delete: if canEditContent();
+    }
   }
 }

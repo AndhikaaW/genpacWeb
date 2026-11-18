@@ -6,18 +6,19 @@ import RegistrationFormPage from './admin/pages/RegistrationFormPage'
 import { TutorAuthProvider } from './tutor/TutorAuthContext'
 import TutorApp from './tutor/TutorApp'
 import App from './App.tsx'
+import AnnouncementPage from './components/AnnouncementPage'
 import './index.css'
 
-// Hash-based routing: #/admin/... → Admin panel, #/daftar → Form, else → Landing
+// Path-based routing: /admin/... → Admin panel, /tutor/... → Tutor, /daftar → Form, /info → Pengumuman, / → Landing
 function Root() {
-  const [path, setPath] = React.useState(window.location.hash)
+  const [path, setPath] = React.useState(window.location.pathname)
   React.useEffect(() => {
-    const handler = () => setPath(window.location.hash)
-    window.addEventListener('hashchange', handler)
-    return () => window.removeEventListener('hashchange', handler)
+    const handler = () => setPath(window.location.pathname)
+    window.addEventListener('popstate', handler)
+    return () => window.removeEventListener('popstate', handler)
   }, [])
 
-  if (path.startsWith('#/admin')) {
+  if (path.startsWith('/admin')) {
     return (
       <AuthProvider>
         <AdminApp />
@@ -25,7 +26,7 @@ function Root() {
     )
   }
 
-  if (path.startsWith('#/tutor')) {
+  if (path.startsWith('/tutor')) {
     return (
       <TutorAuthProvider>
         <TutorApp />
@@ -33,8 +34,12 @@ function Root() {
     )
   }
 
-  if (path === '#/daftar') {
+  if (path === '/daftar') {
     return <RegistrationFormPage />
+  }
+
+  if (path === '/info') {
+    return <AnnouncementPage />
   }
 
   return <App />

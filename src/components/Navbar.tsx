@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, type MouseEvent } from 'react'
 import { Menu, X, Star } from 'lucide-react'
 import { waLink } from '../lib/config'
 import { cn } from '../lib/utils'
@@ -16,27 +16,38 @@ export default function Navbar({
 }) {
   const settings = useAppSettings()
   const [activeSection, setActiveSection] = useState('tentang')
+  const [currentPath, setCurrentPath] = useState(window.location.pathname)
+
+  useEffect(() => {
+    const handler = () => setCurrentPath(window.location.pathname)
+    window.addEventListener('popstate', handler)
+    return () => window.removeEventListener('popstate', handler)
+  }, [])
+
+  const isLandingPage = currentPath === '/'
+  const isAnnouncementPage = currentPath === '/info'
 
   const navLinks = [
-    { name: 'Tentang', href: '#tentang' },
-    { name: 'Program', href: '#program' },
-    { name: 'Fasilitas', href: '#fasilitas' },
-    { name: 'Tutor', href: '#tutor' },
-    { name: 'Lokasi', href: '#lokasi' },
+    { name: 'Tentang', section: 'tentang' },
+    { name: 'Program', section: 'program' },
+    { name: 'Fasilitas', section: 'fasilitas' },
+    { name: 'Tutor', section: 'tutor' },
+    { name: 'Lokasi', section: 'lokasi' },
   ]
 
   useEffect(() => {
+    if (!isLandingPage) return
     let scheduled = false
     const updateActiveSection = () => {
       if (scheduled) return
       scheduled = true
       requestAnimationFrame(() => {
         scheduled = false
-        const current = [...navLinks].reverse().find(({ href }) => {
-          const section = document.getElementById(href.slice(1))
-          return section && section.getBoundingClientRect().top <= 120
+        const current = [...navLinks].reverse().find(({ section }) => {
+          const el = document.getElementById(section)
+          return el && el.getBoundingClientRect().top <= 120
         })
-        setActiveSection(current?.href.slice(1) ?? 'tentang')
+        setActiveSection(current?.section ?? 'tentang')
       })
     }
     window.addEventListener('scroll', updateActiveSection, { passive: true })
@@ -46,7 +57,22 @@ export default function Navbar({
       window.removeEventListener('scroll', updateActiveSection)
       window.removeEventListener('resize', updateActiveSection)
     }
-  }, [])
+  }, [isLandingPage])
+
+  function handleSectionClick(e: MouseEvent, section: string) {
+    e.preventDefault()
+    if (isLandingPage) {
+      setActiveSection(section)
+      document.getElementById(section)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      history.replaceState(null, '', '/')
+    } else {
+      window.location.href = `/?scroll=${section}`
+    }
+  }
+
+  function sectionHref(section: string) {
+    return isLandingPage ? '/' : `/?scroll=${section}`
+  }
 
   return (
     <nav
@@ -59,8 +85,7 @@ export default function Navbar({
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 md:h-20">
-          {/* Logo - more distinctive */}
-          <a href="#hero" className="flex items-center gap-2 group">
+          <a href="/" className="flex items-center gap-2 group">
             <img src={logoUrl} alt="Genza" width={40} height={40} className="w-10 h-10 rounded-full object-cover" />
             <div className="hidden sm:block">
               <span className="text-lg font-heading font-bold text-slate-800 group-hover:text-blue-500 transition-colors">
@@ -72,16 +97,16 @@ export default function Navbar({
             </div>
           </a>
 
-          {/* Desktop Navigation - more spacing */}
+          {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-2">
             {navLinks.map((link) => (
               <a
                 key={link.name}
-                href={link.href}
-                onClick={() => setActiveSection(link.href.slice(1))}
+                href={sectionHref(link.section)}
+                onClick={(e) => handleSectionClick(e, link.section)}
                 className={cn(
                   'px-4 py-2 text-sm font-medium rounded-lg transition-colors',
-                  activeSection === link.href.slice(1)
+                  isLandingPage && activeSection === link.section
                     ? 'bg-blue-50 text-blue-600 font-semibold'
                     : 'text-slate-600 hover:text-blue-600 hover:bg-blue-50/50'
                 )}
@@ -89,6 +114,17 @@ export default function Navbar({
                 {link.name}
               </a>
             ))}
+            <a
+              href="/info"
+              className={cn(
+                'px-4 py-2 text-sm font-medium rounded-lg transition-colors',
+                isAnnouncementPage
+                  ? 'bg-blue-50 text-blue-600 font-semibold'
+                  : 'text-slate-600 hover:text-blue-600 hover:bg-blue-50/50'
+              )}
+            >
+              Pengumuman
+            </a>
             <a
               href="https://genzaeducationpacitan.online/#/daftar"
               target="_blank"
@@ -122,11 +158,11 @@ export default function Navbar({
             {navLinks.map((link) => (
               <a
                 key={link.name}
-                href={link.href}
-                onClick={() => { setActiveSection(link.href.slice(1)); onMobileMenuToggle() }}
+                href={sectionHref(link.section)}
+                onClick={(e) => { handleSectionClick(e, link.section); onMobileMenuToggle() }}
                 className={cn(
                   'block px-4 py-3 rounded-lg text-base font-medium transition-colors',
-                  activeSection === link.href.slice(1)
+                  isLandingPage && activeSection === link.section
                     ? 'bg-blue-50 text-blue-600 font-semibold'
                     : 'text-slate-600 hover:text-blue-600 hover:bg-blue-50/50'
                 )}
@@ -134,6 +170,18 @@ export default function Navbar({
                 {link.name}
               </a>
             ))}
+            <a
+              href="/info"
+              onClick={onMobileMenuToggle}
+              className={cn(
+                'block px-4 py-3 rounded-lg text-base font-medium transition-colors',
+                isAnnouncementPage
+                  ? 'bg-blue-50 text-blue-600 font-semibold'
+                  : 'text-slate-600 hover:text-blue-600 hover:bg-blue-50/50'
+              )}
+            >
+              Pengumuman
+            </a>
             <a
               href="https://genzaeducationpacitan.online/#/daftar"
               target="_blank"

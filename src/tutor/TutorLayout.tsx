@@ -43,7 +43,7 @@ export default function TutorLayout({ children }: { children: ReactNode }) {
       <SidebarProvider defaultOpen>
         <Sidebar collapsible="offcanvas" className="bg-white">
           <SidebarHeader className="border-b border-sidebar-border px-4 py-4">
-            <a href="#/tutor/absensi" className="flex items-center gap-3 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+            <a href="/tutor/absensi" className="flex items-center gap-3 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
               <img src={logoUrl} alt="Genza Education" width={40} height={40} className="h-10 w-10 rounded-full object-cover" />
               <span className="min-w-0">
                 <span className="block truncate text-sm font-semibold text-sidebar-foreground">Portal Tutor</span>
@@ -59,7 +59,7 @@ export default function TutorLayout({ children }: { children: ReactNode }) {
                 {LINKS.map(({ label, path: target, icon: Icon }) => (
                   <SidebarMenuItem key={target}>
                     <SidebarMenuButton
-                      render={<a href={`#${target}`} />}
+                      render={<a href={target} />}
                       isActive={path === target}
                       className="h-10 data-[active=true]:font-semibold"
                     >

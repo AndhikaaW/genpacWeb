@@ -19,6 +19,7 @@ import {
   KeyRound,
   CalendarDays,
   Trophy,
+  Megaphone,
 } from 'lucide-react'
 import { Button } from '../components/ui/button'
 import { hasPermission } from './rbac'
@@ -59,6 +60,7 @@ const NAV_GROUPS = [
       { label: 'Banner Slider', to: '/admin/banner', icon: PanelsTopLeft, permission: 'content.view' },
       { label: 'Testimoni', to: '/admin/testimoni', icon: MessageSquare, permission: 'content.view' },
       { label: 'Prestasi Siswa', to: '/admin/prestasi-siswa', icon: Trophy, permission: 'content.view' },
+      { label: 'Pengumuman', to: '/admin/pengumuman', icon: Megaphone, permission: 'content.view' },
     ],
   },
   {
@@ -122,7 +124,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
                     return (
                       <SidebarMenuItem key={item.to}>
                         <SidebarMenuButton
-                          render={<a href={`#${item.to}`} />}
+                          render={<a href={item.to} />}
                           isActive={active}
                           className={`h-10 text-slate-600 hover:bg-slate-100 hover:text-slate-900 ${active ? 'bg-blue-50 font-semibold text-blue-700 ring-1 ring-blue-100' : ''}`}
                         >

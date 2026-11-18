@@ -31,6 +31,17 @@ export default function App() {
   }, [])
 
   useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    const scrollTo = params.get('scroll')
+    if (scrollTo) {
+      history.replaceState(null, '', '/')
+      requestAnimationFrame(() => {
+        document.getElementById(scrollTo)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      })
+    }
+  }, [])
+
+  useEffect(() => {
     const sections = Array.from(document.querySelectorAll<HTMLElement>('[data-scroll-reveal]'))
     if (!('IntersectionObserver' in window)) {
       sections.forEach((section) => section.classList.add('is-visible'))

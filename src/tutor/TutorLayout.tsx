@@ -59,7 +59,10 @@ export default function TutorLayout({ children }: { children: ReactNode }) {
                 {LINKS.map(({ label, path: target, icon: Icon }) => (
                   <SidebarMenuItem key={target}>
                     <SidebarMenuButton
-                      render={<a href={target} />}
+                      render={<a href={target} onClick={(event) => {
+                        event.preventDefault()
+                        navigate(target)
+                      }} />}
                       isActive={path === target}
                       className="h-10 data-[active=true]:font-semibold"
                     >

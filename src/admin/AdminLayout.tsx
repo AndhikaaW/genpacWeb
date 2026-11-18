@@ -124,7 +124,10 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
                     return (
                       <SidebarMenuItem key={item.to}>
                         <SidebarMenuButton
-                          render={<a href={item.to} />}
+                          render={<a href={item.to} onClick={(event) => {
+                            event.preventDefault()
+                            navigate(item.to)
+                          }} />}
                           isActive={active}
                           className={`h-10 text-slate-600 hover:bg-slate-100 hover:text-slate-900 ${active ? 'bg-blue-50 font-semibold text-blue-700 ring-1 ring-blue-100' : ''}`}
                         >

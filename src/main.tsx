@@ -7,41 +7,49 @@ import { TutorAuthProvider } from './tutor/TutorAuthContext'
 import TutorApp from './tutor/TutorApp'
 import App from './App.tsx'
 import AnnouncementPage from './components/AnnouncementPage'
+import { AppSettingsProvider } from './hooks/AppSettingsContext'
 import './index.css'
 
-// Path-based routing: /admin/... → Admin panel, /tutor/... → Tutor, /daftar → Form, /info → Pengumuman, / → Landing
-function Root() {
+function usePathSegment() {
   const [path, setPath] = React.useState(window.location.pathname)
   React.useEffect(() => {
     const handler = () => setPath(window.location.pathname)
     window.addEventListener('popstate', handler)
     return () => window.removeEventListener('popstate', handler)
   }, [])
+  if (path.startsWith('/admin')) return 'admin' as const
+  if (path.startsWith('/tutor')) return 'tutor' as const
+  if (path === '/daftar') return 'daftar' as const
+  if (path === '/info') return 'info' as const
+  return 'landing' as const
+}
 
-  if (path.startsWith('/admin')) {
-    return (
-      <AuthProvider>
-        <AdminApp />
-      </AuthProvider>
-    )
-  }
+// Masing-masing zona punya provider sendiri yang hanya mount saat dibutuhkan.
+// Tapi sekali mount (masuk /admin), provider tidak di-destroy saat navigasi
+// antar sub-path /admin/x → /admin/y karena segmen 'admin' tidak berubah.
+function AdminZone() {
+  return (
+    <AuthProvider>
+      <AdminApp />
+    </AuthProvider>
+  )
+}
 
-  if (path.startsWith('/tutor')) {
-    return (
-      <TutorAuthProvider>
-        <TutorApp />
-      </TutorAuthProvider>
-    )
-  }
+function TutorZone() {
+  return (
+    <TutorAuthProvider>
+      <TutorApp />
+    </TutorAuthProvider>
+  )
+}
 
-  if (path === '/daftar') {
-    return <RegistrationFormPage />
-  }
+function Root() {
+  const segment = usePathSegment()
 
-  if (path === '/info') {
-    return <AnnouncementPage />
-  }
-
+  if (segment === 'admin') return <AdminZone />
+  if (segment === 'tutor') return <TutorZone />
+  if (segment === 'daftar') return <AppSettingsProvider><RegistrationFormPage /></AppSettingsProvider>
+  if (segment === 'info') return <AnnouncementPage />
   return <App />
 }
 

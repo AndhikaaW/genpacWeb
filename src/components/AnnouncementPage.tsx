@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { collection, onSnapshot, orderBy, query } from 'firebase/firestore'
+import { collection, onSnapshot, orderBy, query, where } from 'firebase/firestore'
 import { db } from '../firebase'
 import Navbar from './Navbar'
 import Footer from './Footer'
@@ -28,11 +28,9 @@ function usePengumuman() {
   const [error, setError] = useState(false)
 
   useEffect(() => onSnapshot(
-    query(collection(db, 'pengumuman'), orderBy('urutan')),
+    query(collection(db, 'pengumuman'), where('aktif', '==', true), orderBy('urutan')),
     (snapshot) => {
-      setItems(snapshot.docs
-        .filter((document) => document.data().aktif === true)
-        .map((document) => {
+      setItems(snapshot.docs.map((document) => {
         const data = document.data()
         return {
           id: document.id,

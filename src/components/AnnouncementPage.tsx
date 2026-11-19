@@ -44,7 +44,11 @@ function usePengumuman() {
       }))
       setLoading(false)
     },
-    () => { setLoading(false); setError(true) },
+    (loadError) => {
+      console.error('Gagal memuat pengumuman dari Firestore:', loadError)
+      setLoading(false)
+      setError(true)
+    },
   ), [])
 
   return { items, loading, error }

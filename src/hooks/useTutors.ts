@@ -6,6 +6,7 @@ export interface TutorItem {
   id: string
   nama: string
   mapel: string
+  deskripsi: string
   fotoBa64: string // base64 string dengan prefix data:image/jpeg;base64,...
   urutan: number
 }
@@ -24,6 +25,7 @@ export function useTutors() {
           id: d.id,
           nama: d.data().nama ?? '',
           mapel: d.data().mapel ?? '',
+          deskripsi: d.data().deskripsi ?? 'Pendamping belajar',
           fotoBa64: d.data().foto_base64 ?? '',
           urutan: d.data().urutan ?? 0,
         })))

@@ -26,7 +26,7 @@ export default function Tutors() {
         <div>
           <p className="mb-3 text-sm font-bold uppercase tracking-[0.16em] text-[#22539F]">Belajar bersama ahlinya</p>
           <h2 className="text-3xl font-bold text-slate-800 sm:text-4xl">Tim Tutor</h2>
-          <p className="mt-3 max-w-lg text-lg text-slate-600">Terseleksi ketat, terlatih intensif, dan siap mendampingi perjalanan belajarmu.</p>
+          <p className="mt-3 max-w-lg text-lg text-slate-600">Dibimbing langsung oleh tutor berpengalaman yang siap mendampingi perjalanan belajarmu.</p>
         </div>
         <p className="max-w-xs border-l-4 border-[#F6CC46] pl-4 text-sm leading-relaxed text-slate-600">Kenali tutor yang akan membantu kamu belajar lebih terarah.</p>
       </div>
@@ -48,14 +48,14 @@ export default function Tutors() {
                 </div>
               )}
               <div className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-[#163A70]/35 to-transparent" aria-hidden="true" />
-              <span className="pointer-events-none absolute bottom-3 left-4 rounded-md bg-[#F6CC46] px-3 py-1 text-xs font-bold text-[#163A70]">Tutor Genza</span>
+              <span className="pointer-events-none absolute bottom-3 left-4 rounded-md bg-[#F6CC46] px-3 py-1 text-xs font-bold text-[#163A70]">G-Tutor {tutor.mapel}</span>
             </div>
             <div className="relative px-5 pb-5 pt-4">
               <span className="absolute -top-3 right-5 h-1 w-10 rounded-full bg-[#F6CC46]" aria-hidden="true" />
               <h3 className="text-lg font-bold leading-snug text-slate-800">{tutor.nama}</h3>
               <p className="mt-1 text-sm font-medium text-[#22539F]">{tutor.mapel}</p>
               <div className="mt-4 border-t border-slate-100 pt-3 text-xs text-slate-600">
-                Pendamping belajar
+                {tutor.deskripsi}
               </div>
             </div>
           </article>

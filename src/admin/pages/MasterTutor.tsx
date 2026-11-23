@@ -4,32 +4,32 @@ import { db } from '../../firebase'
 import AdminFormDialog from '../components/AdminFormDialog'
 import AdminImageUpload from '../components/AdminImageUpload'
 
-interface TutorItem { id: string; nama: string; mapel: string; fotoBa64: string; aktif: boolean; urutan: number }
+interface TutorItem { id: string; nama: string; mapel: string; deskripsi: string; fotoBa64: string; aktif: boolean; urutan: number }
 
 export default function MasterTutor() {
   const [items, setItems] = useState<TutorItem[]>([])
   const [loading, setLoading] = useState(true)
-  const [form, setForm] = useState({ nama: '', mapel: '', fotoBa64: '' })
+  const [form, setForm] = useState({ nama: '', mapel: '', deskripsi: '', fotoBa64: '' })
   const [editing, setEditing] = useState<TutorItem | null>(null)
   const [showForm, setShowForm] = useState(false)
 
   useEffect(() => {
     return onSnapshot(query(collection(db, 'tutors'), orderBy('urutan')), (snap) => {
-      setItems(snap.docs.map((d) => ({ id: d.id, nama: d.data().nama, mapel: d.data().mapel, fotoBa64: d.data().foto_base64 ?? '', aktif: d.data().aktif, urutan: d.data().urutan })))
+      setItems(snap.docs.map((d) => ({ id: d.id, nama: d.data().nama, mapel: d.data().mapel, deskripsi: d.data().deskripsi ?? '', fotoBa64: d.data().foto_base64 ?? '', aktif: d.data().aktif, urutan: d.data().urutan })))
       setLoading(false)
     })
   }, [])
 
-  const openAdd = () => { setEditing(null); setForm({ nama: '', mapel: '', fotoBa64: '' }); setShowForm(true) }
-  const openEdit = (t: TutorItem) => { setEditing(t); setForm({ nama: t.nama, mapel: t.mapel, fotoBa64: t.fotoBa64 }); setShowForm(true) }
+  const openAdd = () => { setEditing(null); setForm({ nama: '', mapel: '', deskripsi: '', fotoBa64: '' }); setShowForm(true) }
+  const openEdit = (t: TutorItem) => { setEditing(t); setForm({ nama: t.nama, mapel: t.mapel, deskripsi: t.deskripsi, fotoBa64: t.fotoBa64 }); setShowForm(true) }
 
   const save = async () => {
     if (!form.nama.trim() || !form.mapel.trim()) throw new Error('Nama dan mata pelajaran wajib diisi.')
     if (editing) {
-      await updateDoc(doc(db, 'tutors', editing.id), { nama: form.nama, mapel: form.mapel, foto_base64: form.fotoBa64, updated_at: serverTimestamp() })
+      await updateDoc(doc(db, 'tutors', editing.id), { nama: form.nama, mapel: form.mapel, deskripsi: form.deskripsi, foto_base64: form.fotoBa64, updated_at: serverTimestamp() })
     } else {
       const maxUrutan = items.length > 0 ? Math.max(...items.map((i) => i.urutan)) + 1 : 0
-      await addDoc(collection(db, 'tutors'), { nama: form.nama, mapel: form.mapel, foto_base64: form.fotoBa64, aktif: true, urutan: maxUrutan, created_at: serverTimestamp() })
+      await addDoc(collection(db, 'tutors'), { nama: form.nama, mapel: form.mapel, deskripsi: form.deskripsi, foto_base64: form.fotoBa64, aktif: true, urutan: maxUrutan, created_at: serverTimestamp() })
     }
     setShowForm(false)
   }
@@ -50,6 +50,9 @@ export default function MasterTutor() {
         </label>
         <label className="block space-y-1.5 text-sm font-medium text-slate-700">Mata pelajaran / spesialisasi <span className="text-red-600">*</span>
           <input required value={form.mapel} onChange={(e) => setForm({ ...form, mapel: e.target.value })} placeholder="Contoh: Matematika" className="w-full rounded-md border border-slate-300 px-3 py-2.5 font-normal outline-none focus-visible:ring-2 focus-visible:ring-blue-500" />
+        </label>
+        <label className="block space-y-1.5 text-sm font-medium text-slate-700">Deskripsi singkat
+          <input value={form.deskripsi} onChange={(e) => setForm({ ...form, deskripsi: e.target.value })} placeholder="Contoh: Pendamping belajar" maxLength={60} className="w-full rounded-md border border-slate-300 px-3 py-2.5 font-normal outline-none focus-visible:ring-2 focus-visible:ring-blue-500" />
         </label>
         <AdminImageUpload label="Foto tutor" value={form.fotoBa64} onChange={(fotoBa64) => setForm((current) => ({ ...current, fotoBa64 }))} />
       </AdminFormDialog>

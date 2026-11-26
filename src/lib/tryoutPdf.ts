@@ -13,7 +13,7 @@ const percentile = (values: number[], p: number) => {
 const format = (value: number | null) => value == null ? '-' : Number.isInteger(value) ? String(value) : value.toFixed(2).replace(/\.00$/, '')
 const key = (value: unknown) => String(value ?? '').trim().replace(/\s+/g, ' ').toLocaleLowerCase()
 
-export function downloadTryOutPdf(agenda: string, studentRows: PdfResult[], allRows: PdfResult[]) {
+export function createTryOutPdf(agenda: string, studentRows: PdfResult[], allRows: PdfResult[]) {
   const student = studentRows[0]
   const pdf = new jsPDF({ unit: 'mm', format: 'a4' })
   const margin = 14
@@ -50,5 +50,15 @@ export function downloadTryOutPdf(agenda: string, studentRows: PdfResult[], allR
   const metricY = conclusionY + 23; const metricWidth = (boxWidth - 24) / 3
   const metrics = [['TOTAL NILAI', format(total)], ['RATA-RATA', format(average)], ['PERINGKAT', rank > 0 ? String(rank) : '-']]
   metrics.forEach(([label, value], index) => { const x = margin + 6 + index * (metricWidth + 6); pdf.setFillColor(index === 2 ? 255 : 255, index === 2 ? 243 : 255, index === 2 ? 204 : 255); pdf.setDrawColor(index === 2 ? 234 : 225, index === 2 ? 179 : 230, index === 2 ? 8 : 240); pdf.roundedRect(x, metricY, metricWidth, 18, 2, 2, 'FD'); pdf.setTextColor(90, 100, 115); pdf.setFontSize(7); pdf.setFont('helvetica', 'bold'); pdf.text(label, x + metricWidth / 2, metricY + 5.5, { align: 'center' }); pdf.setTextColor(index === 2 ? 150 : 34, index === 2 ? 90 : 83, index === 2 ? 0 : 159); pdf.setFontSize(13); pdf.text(value, x + metricWidth / 2, metricY + 14, { align: 'center' }) })
-  pdf.save(`hasil-${agenda}-${student.nisg}`.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') + '.pdf')
+  return pdf.output('blob')
+}
+
+export function downloadTryOutPdf(agenda: string, studentRows: PdfResult[], allRows: PdfResult[]) {
+  const blob = createTryOutPdf(agenda, studentRows, allRows)
+  const url = URL.createObjectURL(blob)
+  const link = document.createElement('a')
+  link.href = url
+  link.download = `hasil-${agenda}-${studentRows[0]?.nisg}`.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') + '.pdf'
+  link.click()
+  URL.revokeObjectURL(url)
 }

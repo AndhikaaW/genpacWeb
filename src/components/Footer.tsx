@@ -90,6 +90,7 @@ export default function Footer() {
                   <li><a href="#galeri" className="text-blue-200 hover:text-white text-sm transition-colors cursor-pointer">Galeri</a></li>
                   <li><a href="#faq" className="text-blue-200 hover:text-white text-sm transition-colors cursor-pointer">FAQ</a></li>
                   <li><a href="#lokasi" className="text-blue-200 hover:text-white text-sm transition-colors cursor-pointer">Lokasi</a></li>
+                  <li><a href="/try-out" className="text-blue-200 hover:text-white text-sm transition-colors cursor-pointer">G-Try Out</a></li>
                   <li><a href="/info" className="text-blue-200 hover:text-white text-sm transition-colors cursor-pointer">Pengumuman</a></li>
                 </ul>
               </div>

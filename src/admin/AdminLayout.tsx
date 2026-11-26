@@ -20,6 +20,7 @@ import {
   CalendarDays,
   Trophy,
   Megaphone,
+  ClipboardCheck,
 } from 'lucide-react'
 import { Button } from '../components/ui/button'
 import { hasPermission } from './rbac'
@@ -61,6 +62,8 @@ const NAV_GROUPS = [
       { label: 'Testimoni', to: '/admin/testimoni', icon: MessageSquare, permission: 'content.view' },
       { label: 'Prestasi Siswa', to: '/admin/prestasi-siswa', icon: Trophy, permission: 'content.view' },
       { label: 'Pengumuman', to: '/admin/pengumuman', icon: Megaphone, permission: 'content.view' },
+      { label: 'G-Try Out', to: '/admin/g-try-out', icon: ClipboardCheck, permission: 'content.view' },
+      { label: 'Hasil G-Try Out', to: '/admin/hasil-try-out', icon: ClipboardCheck, permission: 'content.view' },
     ],
   },
   {

@@ -7,6 +7,8 @@ import { TutorAuthProvider } from './tutor/TutorAuthContext'
 import TutorApp from './tutor/TutorApp'
 import App from './App.tsx'
 import AnnouncementPage from './components/AnnouncementPage'
+import GTryOutPage from './components/GTryOutPage'
+import TryOutResultsPage from './components/TryOutResultsPage'
 import { AppSettingsProvider } from './hooks/AppSettingsContext'
 import './index.css'
 
@@ -21,6 +23,8 @@ function usePathSegment() {
   if (path.startsWith('/tutor')) return 'tutor' as const
   if (path === '/daftar') return 'daftar' as const
   if (path === '/info') return 'info' as const
+  if (path === '/try-out') return 'try-out' as const
+  if (path === '/hasil-try-out') return 'hasil-try-out' as const
   return 'landing' as const
 }
 
@@ -50,6 +54,8 @@ function Root() {
   if (segment === 'tutor') return <TutorZone />
   if (segment === 'daftar') return <AppSettingsProvider><RegistrationFormPage /></AppSettingsProvider>
   if (segment === 'info') return <AnnouncementPage />
+  if (segment === 'try-out') return <GTryOutPage />
+  if (segment === 'hasil-try-out') return <TryOutResultsPage />
   return <App />
 }
 

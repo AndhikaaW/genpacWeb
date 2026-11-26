@@ -19,6 +19,8 @@ import TutorAccountsPage from './pages/TutorAccountsPage'
 import AgendaPage from './pages/AgendaPage'
 import MasterPrestasi from './pages/MasterPrestasi'
 import MasterPengumuman from './pages/MasterPengumuman'
+import MasterGTryOut from './pages/MasterGTryOut'
+import MasterTryOutResults from './pages/MasterTryOutResults'
 import AdminLayout from './AdminLayout'
 import logoUrl from '../assets/G-logo.png'
 import { hasPermission, permissionForPath } from './rbac'
@@ -73,6 +75,8 @@ export default function AdminApp() {
     if (path === '/admin/testimoni') return <MasterTestimoni />
     if (path === '/admin/prestasi-siswa') return <MasterPrestasi />
     if (path === '/admin/pengumuman') return <MasterPengumuman />
+    if (path === '/admin/g-try-out') return <MasterGTryOut />
+    if (path === '/admin/hasil-try-out') return <MasterTryOutResults />
     if (path === '/admin/program') return <MasterProgram />
     return <AdminDashboard />
   })()

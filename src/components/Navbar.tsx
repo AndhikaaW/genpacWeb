@@ -26,6 +26,7 @@ export default function Navbar({
 
   const isLandingPage = currentPath === '/'
   const isAnnouncementPage = currentPath === '/info'
+  const isGTryOutPage = currentPath === '/try-out'
 
   const navLinks = [
     { name: 'Tentang', section: 'tentang' },
@@ -115,6 +116,17 @@ export default function Navbar({
               </a>
             ))}
             <a
+              href="/try-out"
+              className={cn(
+                'px-4 py-2 text-sm font-medium rounded-lg transition-colors',
+                isGTryOutPage
+                  ? 'bg-blue-50 text-blue-600 font-semibold'
+                  : 'text-slate-600 hover:text-blue-600 hover:bg-blue-50/50'
+              )}
+            >
+              G-Try Out
+            </a>
+            <a
               href="/info"
               className={cn(
                 'px-4 py-2 text-sm font-medium rounded-lg transition-colors',
@@ -170,6 +182,18 @@ export default function Navbar({
                 {link.name}
               </a>
             ))}
+            <a
+              href="/try-out"
+              onClick={onMobileMenuToggle}
+              className={cn(
+                'block px-4 py-3 rounded-lg text-base font-medium transition-colors',
+                isGTryOutPage
+                  ? 'bg-blue-50 text-blue-600 font-semibold'
+                  : 'text-slate-600 hover:text-blue-600 hover:bg-blue-50/50'
+              )}
+            >
+              G-Try Out
+            </a>
             <a
               href="/info"
               onClick={onMobileMenuToggle}

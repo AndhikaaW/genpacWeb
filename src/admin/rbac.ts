@@ -37,6 +37,6 @@ export function permissionForPath(path: string) {
   if (path === '/admin/agenda') return 'agenda.view'
   if (path === '/admin/pengaturan') return 'settings.edit'
   if (path === '/admin/dashboard' || path === '/admin/pendaftar' || path.startsWith('/admin/pendaftar/')) return 'registrations.view'
-  if (['/admin/program', '/admin/jenjang', '/admin/fasilitas', '/admin/tutor', '/admin/foto', '/admin/banner', '/admin/testimoni', '/admin/prestasi-siswa', '/admin/pengumuman'].includes(path)) return 'content.view'
+  if (['/admin/program', '/admin/jenjang', '/admin/fasilitas', '/admin/tutor', '/admin/foto', '/admin/banner', '/admin/testimoni', '/admin/prestasi-siswa', '/admin/pengumuman', '/admin/g-try-out', '/admin/hasil-try-out'].includes(path)) return 'content.view'
   return 'registrations.view'
 }
